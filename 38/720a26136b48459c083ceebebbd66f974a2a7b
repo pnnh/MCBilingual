@@ -1,0 +1,54 @@
+.specify/feature.json
+  h_6465a203f88bd5 2
+specs/003-language-hotkey/research.md
+  h_6465a203f88bd5 38-43
+specs/003-language-hotkey/tasks.md
+  h_6465a203f88bd5 1-101
+src/main/java/pnnh/mcbilingual/MCBilingual.java
+  h_6465a203f88bd5 12,25
+src/main/java/pnnh/mcbilingual/language/LanguageTexts.java
+  h_6465a203f88bd5 47-62
+src/main/java/pnnh/mcbilingual/switchlang/LanguageCycle.java
+  h_6465a203f88bd5 1-22
+src/main/java/pnnh/mcbilingual/switchlang/LanguageSwitch.java
+  h_6465a203f88bd5 1-162
+src/main/java/pnnh/mcbilingual/switchlang/SwitchKeyHandler.java
+  h_6465a203f88bd5 1-102
+src/main/java/pnnh/mcbilingual/switchlang/mixin/AdvancementsScreenAccessor.java
+  h_6465a203f88bd5 1-26
+src/main/java/pnnh/mcbilingual/switchlang/mixin/BookViewScreenAccessor.java
+  h_6465a203f88bd5 1-12
+src/main/java/pnnh/mcbilingual/switchlang/mixin/I18nLanguageSetter.java
+  h_6465a203f88bd5 1-19
+src/main/java/pnnh/mcbilingual/switchlang/mixin/KeyboardHandlerAccessor.java
+  h_6465a203f88bd5 1-15
+src/main/java/pnnh/mcbilingual/switchlang/mixin/ScreenRebuild.java
+  h_6465a203f88bd5 1-12
+src/main/java/pnnh/mcbilingual/switchlang/mixin/SignTextAccessor.java
+  h_6465a203f88bd5 1-13
+src/main/java/pnnh/mcbilingual/switchlang/mixin/TextDisplayAccessor.java
+  h_6465a203f88bd5 1-12
+src/main/resources/META-INF/accesstransformer.cfg
+  h_6465a203f88bd5 1-5
+src/main/resources/assets/mcbilingual/lang/en_us.json
+  h_6465a203f88bd5 3-5
+src/main/resources/assets/mcbilingual/lang/zh_cn.json
+  h_6465a203f88bd5 3-5
+src/main/resources/mcbilingual-language.mixins.json
+  h_6465a203f88bd5 1-19
+src/main/templates/META-INF/neoforge.mods.toml
+  h_6465a203f88bd5 15,46-48,51-53
+src/test/java/pnnh/mcbilingual/switchlang/LanguageCycleTest.java
+  h_6465a203f88bd5 1-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "38720a26136b48459c083ceebebbd66f974a2a7b",
+  "prompts": {},
+  "humans": {
+    "h_6465a203f88bd5": {
+      "author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
