@@ -12,6 +12,7 @@ description='''
 Client-side Chinese and English names for item tooltips.
 When Jade is installed, looked-at block and entity names get the same second line.
 When JEI is installed, item search also matches the other language, pinyin, and initials.
+A hotkey switches the whole client between Chinese and English without reloading resource packs.
 '''
 
 [[dependencies.${mod_id}]]
@@ -42,5 +43,11 @@ When JEI is installed, item search also matches the other language, pinyin, and 
     ordering="AFTER"
     side="CLIENT"
 
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
 [[mixins]]
     config="${mod_id}.mixins.json"
+
+[[mixins]]
+    config="${mod_id}-language.mixins.json"

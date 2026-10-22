@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pnnh.mcbilingual.switchlang.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "I18nLanguageSetter",
+    "KeyboardHandlerAccessor",
+    "ScreenRebuild",
+    "BookViewScreenAccessor",
+    "AdvancementsScreenAccessor",
+    "SignTextAccessor",
+    "TextDisplayAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

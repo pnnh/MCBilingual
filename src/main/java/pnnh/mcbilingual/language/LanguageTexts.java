@@ -46,6 +46,22 @@ public final class LanguageTexts extends SimplePreparableReloadListener<Language
         return ready;
     }
 
+    /**
+     * The table loaded for {@code zh_cn} or {@code en_us}. Null before the tables
+     * are ready, for any other code, or when that language failed to load.
+     */
+    public ClientLanguage clientLanguage(String languageCode) {
+        if (!ready) {
+            return null;
+        }
+        return table(languageCode);
+    }
+
+    public boolean hasUsableText(String languageCode) {
+        ClientLanguage language = clientLanguage(languageCode);
+        return language != null && !language.getLanguageData().isEmpty();
+    }
+
     public String currentLanguage() {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft == null || minecraft.options == null) {

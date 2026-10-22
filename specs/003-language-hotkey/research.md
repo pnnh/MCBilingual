@@ -35,3 +35,9 @@
 - **Decision**: 构建某一语言失败或该语言表为空时，仍然允许按键把选项切过去，但 001 的省略规则继续生效，不合成翻译键行。两种都失败时按键不改变语言。
 - **Rationale**: 缺包要能进世界。切到一份空语言仍会让界面掉回翻译键，所以两种都不可用时不切。只有一种可用时允许切到可用的那种；切到空表时界面会显示原版缺词行为，quickstart 要记下实际结果。若空表会把大量键显示出来，实现时改为拒绝切到空表，并在计划的契约里保持「不把翻译键当成第二语言行」。
 - **Alternatives considered**: 缺包时禁用整个模组。违反 FR-014。
+
+## 21.1.251 访问点
+
+- **Decision**: 按键时调用 `LanguageManager.setSelected`、`I18n.setLanguage` 和 `Language.inject`，装上 `LanguageTexts` 里那一份单独加载的 `ClientLanguage`，然后 `options.languageCode` 加 `options.save()`。不调用 `onResourceManagerReload`，也不调用 `reloadResourcePacks`。
+- **Rationale**: `setSelected` 只改语言代码和 Java locale，不装文案。`onResourceManagerReload` 会重新读语言文件，并且选中的 `ClientLanguage` 永远先放入 `en_us`。`I18n.setLanguage` 在 21.1.251 是包内方法，所以用访问器调用它。原版按键点击只在没有屏幕时入队，背包和暂停菜单里的按键改从 `InputEvent` 读取。
+- **Alternatives considered**: 只重载语言管理器。那会重新解析 JSON，并让英文回退进中文表。没有采用。

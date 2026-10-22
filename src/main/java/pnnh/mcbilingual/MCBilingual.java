@@ -9,6 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 
 import pnnh.mcbilingual.language.LanguageTexts;
+import pnnh.mcbilingual.switchlang.SwitchKeyHandler;
 
 /**
  * Client-only bilingual names. A dedicated server does not load this mod.
@@ -21,5 +22,6 @@ public class MCBilingual {
     public MCBilingual(IEventBus modEventBus) {
         LOGGER.info("MCBilingual client mod loading");
         modEventBus.addListener(LanguageTexts::onRegisterReloadListeners);
+        modEventBus.addListener(SwitchKeyHandler::registerKeys);
     }
 }
