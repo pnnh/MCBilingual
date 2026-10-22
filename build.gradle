@@ -18,6 +18,14 @@ sourceSets.main.resources {
     exclude("src/generated/**/.cache")
 }
 
+repositories {
+    mavenCentral()
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+}
+
 base {
     archivesName = mod_id
 }
@@ -74,6 +82,17 @@ configurations {
 }
 
 dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+
+    // Jade is optional at runtime. compileOnly keeps the plugin compiling;
+    // localRuntime loads it for dev clients and is not published.
+    compileOnly "maven.modrinth:jade:${jade_version}"
+    localRuntime "maven.modrinth:jade:${jade_version}"
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

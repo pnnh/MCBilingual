@@ -1,0 +1,126 @@
+package pnnh.mcbilingual.language;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.ClientLanguage;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+
+import pnnh.mcbilingual.tooltip.SecondaryNameLine;
+import pnnh.mcbilingual.tooltip.SecondaryNamePolicy;
+
+/**
+ * Holds zh_cn and en_us loaded from whatever resource packs are already active.
+ * Reading these tables does not change the game's selected language.
+ */
+public final class LanguageTexts extends SimplePreparableReloadListener<LanguageTexts.Loaded> {
+    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final LanguageTexts INSTANCE = new LanguageTexts();
+    private static final String APPLE_KEY = "item.minecraft.apple";
+
+    private volatile boolean ready;
+    private volatile ClientLanguage chinese;
+    private volatile ClientLanguage english;
+
+    private LanguageTexts() {
+    }
+
+    public static LanguageTexts get() {
+        return INSTANCE;
+    }
+
+    public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(INSTANCE);
+    }
+
+    public boolean ready() {
+        return ready;
+    }
+
+    public String currentLanguage() {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft == null || minecraft.options == null) {
+            return "";
+        }
+        return minecraft.options.languageCode;
+    }
+
+    /**
+     * Returns the trimmed translation, or empty when the key is absent.
+     * A value equal to the key is treated as missing so the raw key is never shown.
+     */
+    public Optional<String> translation(String languageCode, String key) {
+        if (!ready || key == null || key.isBlank()) {
+            return Optional.empty();
+        }
+        ClientLanguage language = table(languageCode);
+        if (language == null) {
+            return Optional.empty();
+        }
+        String value = language.getOrDefault(key, null);
+        if (value == null || value.isBlank() || value.equals(key)) {
+            return Optional.empty();
+        }
+        return Optional.of(value.strip());
+    }
+
+    public List<SecondaryNameLine> secondaryLines(String title, String translationKey) {
+        if (!ready || translationKey == null || translationKey.isBlank()) {
+            return List.of();
+        }
+        return SecondaryNamePolicy.lines(
+                title,
+                currentLanguage(),
+                translationKey,
+                translation(LanguageCodes.ZH_CN, translationKey).orElse(null),
+                translation(LanguageCodes.EN_US, translationKey).orElse(null));
+    }
+
+    @Override
+    protected Loaded prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+        return new Loaded(
+                load(resourceManager, LanguageCodes.ZH_CN),
+                load(resourceManager, LanguageCodes.EN_US));
+    }
+
+    @Override
+    protected void apply(Loaded loaded, ResourceManager resourceManager, ProfilerFiller profiler) {
+        chinese = loaded.chinese();
+        english = loaded.english();
+        ready = true;
+        LOGGER.info(
+                "Language tables ready: zh_cn apple='{}', en_us apple='{}'",
+                translation(LanguageCodes.ZH_CN, APPLE_KEY).orElse("-"),
+                translation(LanguageCodes.EN_US, APPLE_KEY).orElse("-"));
+    }
+
+    private ClientLanguage table(String languageCode) {
+        if (LanguageCodes.isChinese(languageCode)) {
+            return chinese;
+        }
+        if (LanguageCodes.isEnglish(languageCode)) {
+            return english;
+        }
+        return null;
+    }
+
+    private static ClientLanguage load(ResourceManager resourceManager, String code) {
+        try {
+            return ClientLanguage.loadFrom(resourceManager, List.of(code), false);
+        } catch (RuntimeException exception) {
+            LOGGER.error("Could not load language {}", code, exception);
+            return null;
+        }
+    }
+
+    public record Loaded(ClientLanguage chinese, ClientLanguage english) {
+    }
+}

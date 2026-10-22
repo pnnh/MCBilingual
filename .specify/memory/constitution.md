@@ -1,50 +1,125 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: unversioned template → 1.0.0
+- Modified principles:
+  - [PRINCIPLE_1_NAME] → I. Client Only
+  - [PRINCIPLE_2_NAME] → II. Translations Stay Outside
+  - [PRINCIPLE_3_NAME] → III. Own the Behavior
+  - [PRINCIPLE_4_NAME] → IV. Two Languages Until Expanded
+  - [PRINCIPLE_5_NAME] → V. Verify in a Client Session
+- Added sections: Additional Constraints, Development Workflow
+- Removed sections: none (template placeholders replaced)
+- Follow-up TODOs: none
+-->
+
+# MCBilingual Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Client Only
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+MCBilingual MUST run only on the Minecraft client. A dedicated server MUST NOT
+need this mod installed. The mod MUST NOT change server rules, world data, or
+the network protocol.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+Rationale: bilingual display, search text, and language switching are
+presentation. Players on a server install the mod locally.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. Translations Stay Outside
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+MCBilingual MUST NOT ship Chinese or English translation text. It MUST read
+language files already supplied by resource packs and by other mods, including
+I18nUpdateMod3 and Minecraft-Mod-Language-Package. Those mods MAY be present
+at development time or at runtime. They MUST NOT be compile or publication
+dependencies.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Missing text MUST degrade to the available language or be omitted. It MUST NOT
+crash the client and MUST NOT surface a raw translation key as a second
+display line.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Source from I18nUpdateMod3 MUST NOT be copied into this repository. That
+project is AGPL-3.0. Translation packs are data sources, not a code base.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### III. Own the Behavior
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+MCBilingual MUST NOT require PolyglotTooltip or Language Reload to load or to
+deliver its features.
+
+PolyglotTooltip `main` is a NeoForge 1.21.1 reference (NeoForge 21.1.219).
+Its behavior MAY be reimplemented against this project's NeoForge 21.1.251
+toolchain. Its sources MUST NOT be vendored into the published mod, and the
+mod MUST NOT declare it as a dependency.
+
+Language Reload branch `1.21.1` is Fabric-only. Its ideas MAY be
+reimplemented on NeoForge. Fabric mixins, Yarn names, and Fabric API calls
+MUST NOT be copied in as a port.
+
+`thirdpart/` is a local reference checkout. It MUST stay gitignored.
+
+### IV. Two Languages Until Expanded
+
+Until a later feature specification explicitly expands the set, the mod MUST
+support only Simplified Chinese (`zh_cn`) and English (`en_us`).
+
+A feature MUST stay inside its specification. Menu-wide bilingual lines, chat
+translation, maps, font scaling, display-mode cycling, EMI, AE2, and the rest
+of the PolyglotTooltip integration catalog are out of scope until a spec adds
+them.
+
+### V. Verify in a Client Session
+
+A feature that changes what the player sees is not complete until that flow
+has been exercised in a client session. `./gradlew runClient` is the default
+check. A packaged jar in a full modpack is the later compatibility check, not
+a substitute for the daily client check.
+
+Pure text transforms, such as pinyin, MUST have an automated test that does
+not start the game. Player-visible claims MUST NOT be marked done from a
+compile alone.
+
+## Additional Constraints
+
+- Minecraft 1.21.1, NeoForge 21.1.251, Java 21.
+- Mod id `mcbilingual`, package `pnnh.mcbilingual`, client dist only.
+- Optional integrations (JEI, Jade) MUST load as optional. The mod MUST still
+  reach a world when they are absent.
+- Pinyin is search text only. It MUST NOT appear in tooltips or Jade.
+- Switching the displayed primary language MUST NOT run a full resource-pack
+  reload.
+- Reference reading is allowed. Drop-in reuse is not, except a permissively
+  licensed pinyin library chosen in the search feature plan. GPL pinyin4j is
+  rejected because a known Minecraft pinyin mod treats that library as GPL.
+
+## Development Workflow
+
+Work follows Spec Kit, one feature at a time:
+
+1. Specify the player-visible behavior.
+2. Plan the design (`research.md`, `data-model.md`, `contracts/`,
+   `quickstart.md`).
+3. Break the plan into tasks only when implementation is requested.
+4. Implement only the active feature's tasks.
+
+`docs/MCBilingual.md` is background. `docs/plan/` is the reference catalog of
+PolyglotTooltip and Language Reload. A feature specification overrides both
+when they disagree. Do not implement the background document's later stages
+(font scale, three display modes, extra mod integrations) under a stage-1
+spec.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution overrides conflicting local practice. Feature plans MUST
+pass the Constitution Check before implementation. A violation needs an entry
+in that plan's Complexity Tracking.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Amendments change this file and bump the version:
+
+- MAJOR: remove or redefine a principle.
+- MINOR: add a principle or a constraint.
+- PATCH: wording that does not change a rule.
+
+The ratification date stays 2026-10-22. The amended date changes on every
+edit. Specs and plans are reviewed against the current version before
+implementation starts.
+
+**Version**: 1.0.0 | **Ratified**: 2026-10-22 | **Last Amended**: 2026-10-22
