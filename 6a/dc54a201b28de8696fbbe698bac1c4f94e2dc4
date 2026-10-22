@@ -1,0 +1,90 @@
+.claude/skills/speckit-analyze/SKILL.md
+  h_6465a203f88bd5 1-262
+.claude/skills/speckit-checklist/SKILL.md
+  h_6465a203f88bd5 1-376
+.claude/skills/speckit-clarify/SKILL.md
+  h_6465a203f88bd5 1-294
+.claude/skills/speckit-constitution/SKILL.md
+  h_6465a203f88bd5 1-171
+.claude/skills/speckit-converge/SKILL.md
+  h_6465a203f88bd5 1-279
+.claude/skills/speckit-implement/SKILL.md
+  h_6465a203f88bd5 1-226
+.claude/skills/speckit-plan/SKILL.md
+  h_6465a203f88bd5 1-169
+.claude/skills/speckit-specify/SKILL.md
+  h_6465a203f88bd5 1-348
+.claude/skills/speckit-tasks/SKILL.md
+  h_6465a203f88bd5 1-217
+.claude/skills/speckit-taskstoissues/SKILL.md
+  h_6465a203f88bd5 1-112
+.gitattributes
+  h_6465a203f88bd5 1-13
+.gitignore
+  h_6465a203f88bd5 1-43
+.specify/init-options.json
+  h_6465a203f88bd5 1-9
+.specify/integration.json
+  h_6465a203f88bd5 1-15
+.specify/integrations/claude.manifest.json
+  h_6465a203f88bd5 1-17
+.specify/integrations/speckit.manifest.json
+  h_6465a203f88bd5 1-17
+.specify/memory/.constitution-template.json
+  h_6465a203f88bd5 1-4
+.specify/memory/constitution.md
+  h_6465a203f88bd5 1-50
+.specify/scripts/bash/check-prerequisites.sh
+  h_6465a203f88bd5 1-195
+.specify/scripts/bash/common.sh
+  h_6465a203f88bd5 1-704
+.specify/scripts/bash/create-new-feature.sh
+  h_6465a203f88bd5 1-392
+.specify/scripts/bash/setup-plan.sh
+  h_6465a203f88bd5 1-83
+.specify/scripts/bash/setup-tasks.sh
+  h_6465a203f88bd5 1-91
+.specify/templates/checklist-template.md
+  h_6465a203f88bd5 1-40
+.specify/templates/constitution-template.md
+  h_6465a203f88bd5 1-50
+.specify/templates/plan-template.md
+  h_6465a203f88bd5 1-113
+.specify/templates/spec-template.md
+  h_6465a203f88bd5 1-131
+.specify/templates/tasks-template.md
+  h_6465a203f88bd5 1-252
+.specify/workflows/speckit/workflow.yml
+  h_6465a203f88bd5 1-78
+.specify/workflows/workflow-registry.json
+  h_6465a203f88bd5 1-13
+build.gradle
+  h_6465a203f88bd5 1-120
+docs/Minecraft双语显示模组需求与方案.md
+  h_6465a203f88bd5 1-151
+gradle.properties
+  h_6465a203f88bd5 1-30
+gradle/wrapper/gradle-wrapper.properties
+  h_6465a203f88bd5 1-7
+gradlew
+  h_6465a203f88bd5 1-251
+gradlew.bat
+  h_6465a203f88bd5 1-94
+settings.gradle
+  h_6465a203f88bd5 1-11
+src/main/java/pnnh/mcbilingual/MCBilingual.java
+  h_6465a203f88bd5 1-39
+src/main/templates/META-INF/neoforge.mods.toml
+  h_6465a203f88bd5 1-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6adc54a201b28de8696fbbe698bac1c4f94e2dc4",
+  "prompts": {},
+  "humans": {
+    "h_6465a203f88bd5": {
+      "author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
