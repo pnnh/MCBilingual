@@ -1,0 +1,19 @@
+src/main/java/pnnh/mcbilingual/language/LanguageTexts.java
+  s_26512744bd45ea::t_7edb4cb148583f 17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "aa38483e13e00dba2deed3f70dc6f2dd8ab311d8",
+  "prompts": {},
+  "sessions": {
+    "s_26512744bd45ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a16255-1a6b-7f10-94ab-4bc6f45b4985",
+        "model": "unknown"
+      },
+      "human_author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
