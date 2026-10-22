@@ -5,7 +5,7 @@
 ## 准备
 
 - `./gradlew test` 覆盖拼音，不启动游戏。
-- `./gradlew runClient` 时，把 1.21.1 NeoForge 的 JEI 和中文语言包放进 `run/mods`。
+- `./gradlew runClient` 会通过 `localRuntime` 加载 JEI `19.64.0.455`。中文语言包仍放在 `run/mods`，原版物品自带 `zh_cn`。
 - 验证环境不要安装 Just Enough Characters。
 
 ## 自动检查

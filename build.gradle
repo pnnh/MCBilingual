@@ -24,6 +24,15 @@ repositories {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
     }
+    maven {
+        name = "BlameJared"
+        url = "https://maven.blamejared.com/"
+    }
+    // TinyPinyin 2.0.3 is not published to Maven Central.
+    maven {
+        name = "AliyunPublic"
+        url = "https://maven.aliyun.com/repository/public"
+    }
 }
 
 base {
@@ -89,6 +98,24 @@ dependencies {
     // localRuntime loads it for dev clients and is not published.
     compileOnly "maven.modrinth:jade:${jade_version}"
     localRuntime "maven.modrinth:jade:${jade_version}"
+
+    // JEI is optional at runtime. The full mod jar is the 19.64 API surface.
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
+    // Per-character pinyin. The trie dependency is only used by the string API.
+    jarJar(implementation("com.github.promeg:tinypinyin:${tinypinyin_version}") {
+        exclude group: "org.ahocorasick", module: "ahocorasick"
+    }) {
+        version {
+            strictly "[${tinypinyin_version},2.1)"
+            prefer tinypinyin_version
+        }
+    }
+    // Dev runs on 1.21.1 do not load Jar-in-Jar contents from the classes directory.
+    additionalRuntimeClasspath("com.github.promeg:tinypinyin:${tinypinyin_version}") {
+        exclude group: "org.ahocorasick", module: "ahocorasick"
+    }
 }
 
 tasks.named("test") {

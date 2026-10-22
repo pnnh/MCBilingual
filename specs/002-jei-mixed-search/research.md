@@ -20,9 +20,14 @@
 
 ## 如何放进 JEI
 
-- **Decision**: 参考 PolyglotTooltip 对 JEI 1.21.1 的接入点，在 JEI 收集物品名称和构建搜索索引时追加我们的词。至少覆盖默认后缀树和低内存索引这两条 JEI 自己的路径。mixin 仅当模组 `jei` 已加载时应用。`neoforge.mods.toml` 将 JEI 标为客户端可选依赖。
-- **Rationale**: JEI 的搜索串在建索引时固定。只在查询瞬间改匹配器，会被不同的索引实现绕开。PolyglotTooltip 的 `main` 已经针对 `jei 19.43.0.390` 分了这些路径。实现时先确认本仓库能解析的 1.21.1 NeoForge JEI 版本，再按那个版本的类写 mixin。
-- **Alternatives considered**: 正式依赖 JEI。未安装时客户端会起不来，违反 FR-008。运行时反射整个 JEI 索引，版本一变就更难查。
+- **Decision**: 使用本仓库能解析的 JEI `19.64.0.455`（`mezz.jei:jei-1.21.1-neoforge`，BlameJared）。在 `ListElementInfo` 构造结束时，把已经生成的搜索词追加到它的名称列表。默认后缀树和低内存搜索都通过 `getNames()` 读取这份列表。mixin 仅当模组 `jei` 已加载时应用。`neoforge.mods.toml` 将 JEI 标为客户端可选依赖。
+- **Rationale**: 19.64 的构造函数比 PolyglotTooltip 所针对的 19.43 多了一个过滤配置参数，不能照搬旧 mixin。两条索引路径都读同一份名称列表，查询时做包含匹配。名称列表不参与物品绘制。1.21.1 的开发运行不会从 classes 目录加载 Jar-in-Jar，所以 TinyPinyin 还要放进 `additionalRuntimeClasspath`。
+- **Alternatives considered**: `IModPlugin.registerIngredientAliases`。19.64 提供了这个公开 API，但 `searchIngredientAliases` 默认为真，JEI 会把别名写进物品提示框，拼音会露出来，违反 FR-006。正式依赖 JEI 会使未安装时客户端起不来。运行时反射整个索引更难对照版本。
+
+## 拼音库的调用方式
+
+- **Decision**: 只对每个汉字调用 `Pinyin.toPinyin(char)`，再转成小写。不调用按词切分的 `toPinyin(String)`，也不嵌入 `org.ahocorasick:ahocorasick`。
+- **Rationale**: 单字接口给出表里的第一个无声调读音。`行` 在「银行」和「行走」里都是 `xing`。按词切分才会用到运行时词典依赖。实测 `苹果` 为 `pingguo` / `pg`。
 
 ## Just Enough Characters
 

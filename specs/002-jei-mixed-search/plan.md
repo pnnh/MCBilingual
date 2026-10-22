@@ -12,7 +12,7 @@ JEI 搜索词同时包含物品的简体中文名、英文名、无声调连续�
 
 **Language/Version**: Java 21，Minecraft 1.21.1，NeoForge 21.1.251
 
-**Primary Dependencies**: `001-bilingual-tooltips` 的 `LanguageTexts`。JEI 1.21.1 NeoForge API 为 `compileOnly` 与开发期 `localRuntime`。拼音库 `com.github.promeg:tinypinyin:2.0.3`，随模组嵌入。
+**Primary Dependencies**: `001-bilingual-tooltips` 的 `LanguageTexts`。JEI `19.64.0.455`（`mezz.jei:jei-1.21.1-neoforge`）为 `compileOnly` 与开发期 `localRuntime`。拼音库 `com.github.promeg:tinypinyin:2.0.3`，随模组嵌入。搜索词写入 `ListElementInfo` 的名称列表，不使用会显示在提示框里的别名 API。
 
 **Storage**: 内存索引，键为物品，值为中文名、英文名、全拼、首字母。资源重载时重建。不写入磁盘。
 

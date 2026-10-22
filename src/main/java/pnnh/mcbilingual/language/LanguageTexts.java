@@ -14,6 +14,7 @@ import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 
+import pnnh.mcbilingual.search.ItemSearchIndex;
 import pnnh.mcbilingual.tooltip.SecondaryNameLine;
 import pnnh.mcbilingual.tooltip.SecondaryNamePolicy;
 
@@ -100,6 +101,11 @@ public final class LanguageTexts extends SimplePreparableReloadListener<Language
                 "Language tables ready: zh_cn apple='{}', en_us apple='{}'",
                 translation(LanguageCodes.ZH_CN, APPLE_KEY).orElse("-"),
                 translation(LanguageCodes.EN_US, APPLE_KEY).orElse("-"));
+        try {
+            ItemSearchIndex.rebuild();
+        } catch (RuntimeException | LinkageError exception) {
+            LOGGER.error("Could not build item search terms", exception);
+        }
     }
 
     private ClientLanguage table(String languageCode) {

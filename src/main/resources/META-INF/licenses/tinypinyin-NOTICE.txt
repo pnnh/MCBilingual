@@ -1,0 +1,10 @@
+TinyPinyin 2.0.3
+Copyright 2015 guyacong (Promeg)
+https://github.com/promeG/TinyPinyin
+
+Licensed under the Apache License, Version 2.0.
+The license text is tinypinyin-LICENSE.txt in this directory.
+
+MCBilingual embeds the core jar only. It does not embed the optional city
+lexicon, and it does not call the dictionary-based string converter.
+The per-character reading is the library's first toneless syllable.
