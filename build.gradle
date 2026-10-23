@@ -106,7 +106,7 @@ dependencies {
     compileOnly "maven.modrinth:jade:${jade_version}"
     localRuntime "maven.modrinth:jade:${jade_version}"
 
-    // JEI is optional at runtime. The full mod jar is the 19.64 API surface.
+    // Dev jar only. The packaged mod does not declare a JEI dependency.
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 

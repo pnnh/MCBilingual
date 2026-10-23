@@ -16,6 +16,7 @@ import net.neoforged.neoforge.client.settings.KeyConflictContext;
 
 import pnnh.mcbilingual.MCBilingual;
 import pnnh.mcbilingual.compat.RivalMods;
+import pnnh.mcbilingual.freeze.FreezeSession;
 import pnnh.mcbilingual.switchlang.mixin.KeyboardHandlerAccessor;
 
 /**
@@ -45,7 +46,7 @@ public final class SwitchKeyHandler {
 
         @SubscribeEvent
         public static void onKey(InputEvent.Key event) {
-            if (RivalMods.isBlocked() || event.getAction() != GLFW.GLFW_PRESS) {
+            if (RivalMods.isBlocked() || event.getAction() != GLFW.GLFW_PRESS || FreezeSession.get().active()) {
                 return;
             }
             if (!acceptingInput()) {
@@ -65,7 +66,10 @@ public final class SwitchKeyHandler {
 
         @SubscribeEvent
         public static void onMouse(InputEvent.MouseButton.Pre event) {
-            if (RivalMods.isBlocked() || event.getAction() != GLFW.GLFW_PRESS || SWITCH_LANGUAGE.isUnbound()) {
+            if (RivalMods.isBlocked()
+                    || event.getAction() != GLFW.GLFW_PRESS
+                    || SWITCH_LANGUAGE.isUnbound()
+                    || FreezeSession.get().active()) {
                 return;
             }
             if (!acceptingInput()) {

@@ -32,34 +32,6 @@ If Polyglot Tooltip or Language Reload is installed, this mod stands down.
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${mod_id}]]
-    modId="jade"
-    type="optional"
-    versionRange="[15,)"
-    ordering="AFTER"
-    side="CLIENT"
-
-[[dependencies.${mod_id}]]
-    modId="jei"
-    type="optional"
-    versionRange="[19.64,20)"
-    ordering="AFTER"
-    side="CLIENT"
-
-[[dependencies.${mod_id}]]
-    modId="ae2"
-    type="optional"
-    versionRange="[19.2.18,20)"
-    ordering="NONE"
-    side="CLIENT"
-
-[[dependencies.${mod_id}]]
-    modId="integratedterminals"
-    type="optional"
-    versionRange="[1.10.0,1.11.0)"
-    ordering="NONE"
-    side="CLIENT"
-
 [[accessTransformers]]
 file="META-INF/accesstransformer.cfg"
 
@@ -77,3 +49,6 @@ file="META-INF/accesstransformer.cfg"
 
 [[mixins]]
     config="${mod_id}-gametest.mixins.json"
+
+[[mixins]]
+    config="${mod_id}-freeze.mixins.json"

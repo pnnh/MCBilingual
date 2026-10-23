@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pnnh.mcbilingual.freeze.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "pnnh.mcbilingual.freeze.mixin.FreezeMixinPlugin",
+  "mixins": [],
+  "client": [
+    "ScreenHudCaptureMixin",
+    "GuiHudCaptureMixin",
+    "GuiGraphicsCaptureMixin",
+    "TooltipOwnerMixin",
+    "FontCaptureMixin",
+    "GameRendererFreezeMixin",
+    "KeyboardInputFreezeMixin",
+    "MouseLookFreezeMixin",
+    "KeyboardHandlerFreezeMixin",
+    "ChatOwnerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

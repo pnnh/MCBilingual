@@ -9,6 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 
 import pnnh.mcbilingual.compat.RivalMods;
+import pnnh.mcbilingual.freeze.FreezeKeyHandler;
 import pnnh.mcbilingual.language.LanguageTexts;
 import pnnh.mcbilingual.switchlang.SwitchKeyHandler;
 
@@ -28,5 +29,6 @@ public class MCBilingual {
         LOGGER.info("MCBilingual client mod loading");
         modEventBus.addListener(LanguageTexts::onRegisterReloadListeners);
         modEventBus.addListener(SwitchKeyHandler::registerKeys);
+        modEventBus.addListener(FreezeKeyHandler::registerKeys);
     }
 }

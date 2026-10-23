@@ -2,5 +2,6 @@
   "config.jade.plugin_mcbilingual.jade_block_name": "Block secondary name",
   "config.jade.plugin_mcbilingual.jade_entity_name": "Entity secondary name",
   "key.categories.mcbilingual": "MCBilingual",
-  "key.mcbilingual.switch_language": "Switch Chinese / English"
+  "key.mcbilingual.switch_language": "Switch Chinese / English",
+  "key.mcbilingual.freeze_ui": "Freeze interface and look up the other language"
 }
