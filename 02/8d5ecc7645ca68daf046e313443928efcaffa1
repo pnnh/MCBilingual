@@ -1,0 +1,30 @@
+specs/005-integrated-terminal-search/contracts/integrated-terminal-search.md
+  s_26512744bd45ea::t_2087ba9d26f0aa 1-18
+specs/005-integrated-terminal-search/quickstart.md
+  s_26512744bd45ea::t_fb7d1013f38aea 1-36
+specs/005-integrated-terminal-search/data-model.md
+  s_26512744bd45ea::t_7f888f3340b88a 1-45
+specs/005-integrated-terminal-search/tasks.md
+  s_26512744bd45ea::t_d9ec8b8aaf3178 1-107
+specs/005-integrated-terminal-search/plan.md
+  s_26512744bd45ea::t_4bec30fb68a585 1-100
+  s_26512744bd45ea::t_59c3722a70bfbe 101-103
+specs/005-integrated-terminal-search/research.md
+  s_26512744bd45ea::t_aeeef2e3879bdf 1-61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "028d5ecc7645ca68daf046e313443928efcaffa1",
+  "prompts": {},
+  "sessions": {
+    "s_26512744bd45ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a16255-1a6b-7f10-94ab-4bc6f45b4985",
+        "model": "unknown"
+      },
+      "human_author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
