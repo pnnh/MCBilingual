@@ -1,0 +1,74 @@
+.specify/feature.json
+  h_6465a203f88bd5 2
+build.gradle
+  h_6465a203f88bd5 31-37,126-141,148-208
+gradle.properties
+  h_6465a203f88bd5 42-55
+specs/004-ae2-colony-text/checklists/requirements.md
+  h_6465a203f88bd5 1-35
+specs/004-ae2-colony-text/contracts/ae2-terminal-search.md
+  h_6465a203f88bd5 1-14
+specs/004-ae2-colony-text/contracts/colony-names.md
+  h_6465a203f88bd5 1-12
+specs/004-ae2-colony-text/contracts/rival-standdown.md
+  h_6465a203f88bd5 1-11
+specs/004-ae2-colony-text/data-model.md
+  h_6465a203f88bd5 1-40
+specs/004-ae2-colony-text/plan.md
+  h_6465a203f88bd5 1-95
+specs/004-ae2-colony-text/quickstart.md
+  h_6465a203f88bd5 1-37
+specs/004-ae2-colony-text/research.md
+  h_6465a203f88bd5 1-61
+specs/004-ae2-colony-text/spec.md
+  h_6465a203f88bd5 1-157
+specs/004-ae2-colony-text/tasks.md
+  h_6465a203f88bd5 1-105
+src/main/java/pnnh/mcbilingual/MCBilingual.java
+  h_6465a203f88bd5 11,24-27
+src/main/java/pnnh/mcbilingual/compat/RivalMods.java
+  h_6465a203f88bd5 1-63
+src/main/java/pnnh/mcbilingual/compat/RivalNotice.java
+  h_6465a203f88bd5 1-34
+src/main/java/pnnh/mcbilingual/integration/ae2/Ae2ItemQuery.java
+  h_6465a203f88bd5 1-26
+src/main/java/pnnh/mcbilingual/integration/ae2/Ae2MixinPlugin.java
+  h_6465a203f88bd5 1-53
+src/main/java/pnnh/mcbilingual/integration/ae2/mixin/Ae2NameSearchAccessor.java
+  h_6465a203f88bd5 1-10
+src/main/java/pnnh/mcbilingual/integration/ae2/mixin/Ae2RepoSearchMixin.java
+  h_6465a203f88bd5 1-35
+src/main/java/pnnh/mcbilingual/integration/jade/McbilingualJadePlugin.java
+  h_6465a203f88bd5 9-10,18-20
+src/main/java/pnnh/mcbilingual/integration/jei/JeiMixinPlugin.java
+  h_6465a203f88bd5 12-13,23
+src/main/java/pnnh/mcbilingual/search/ItemSearchIndex.java
+  h_6465a203f88bd5 5,59-82
+src/main/java/pnnh/mcbilingual/switchlang/LanguageMixinPlugin.java
+  h_6465a203f88bd5 1-49
+src/main/java/pnnh/mcbilingual/switchlang/SwitchKeyHandler.java
+  h_6465a203f88bd5 18,48,68
+src/main/java/pnnh/mcbilingual/tooltip/ItemTooltipNames.java
+  h_6465a203f88bd5 23,38-40,56-58,84-91,124-134
+src/main/resources/mcbilingual-ae2.mixins.json
+  h_6465a203f88bd5 1-15
+src/main/resources/mcbilingual-language.mixins.json
+  h_6465a203f88bd5 6
+src/main/templates/META-INF/neoforge.mods.toml
+  h_6465a203f88bd5 16-17,48-54,63-65
+src/test/java/pnnh/mcbilingual/compat/RivalModsTest.java
+  h_6465a203f88bd5 1-34
+src/test/java/pnnh/mcbilingual/search/ItemSearchIndexMatchTest.java
+  h_6465a203f88bd5 1-38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c38d7941a452d96bb5ed5730d6b8b60613240137",
+  "prompts": {},
+  "humans": {
+    "h_6465a203f88bd5": {
+      "author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
