@@ -1,0 +1,86 @@
+src/main/java/pnnh/mcbilingual/freeze/mixin/KeyboardHandlerFreezeMixin.java
+  s_26512744bd45ea::t_3a8e1c3c247a68 1-53
+src/test/java/pnnh/mcbilingual/freeze/SentenceResolverTest.java
+  s_26512744bd45ea::t_f27b24aea6078d 1-140
+src/main/java/pnnh/mcbilingual/freeze/FreezeCapture.java
+  s_26512744bd45ea::t_ac1b51cfaff1aa 1-190
+  s_26512744bd45ea::t_3fd2a313043f9c 191-193
+specs/006-frozen-ui-lookup/tasks.md
+  s_26512744bd45ea::t_1507d52a71768e 1-116
+specs/006-frozen-ui-lookup/plan.md
+  s_26512744bd45ea::t_76a43c20fb229d 1-92
+  s_26512744bd45ea::t_c1412b01311787 93-95
+src/main/java/pnnh/mcbilingual/freeze/mixin/FreezeMixinPlugin.java
+  s_26512744bd45ea::t_6032ce6bd05d26 1-49
+src/main/java/pnnh/mcbilingual/freeze/mixin/GuiHudCaptureMixin.java
+  s_26512744bd45ea::t_53361faeb05938 1-25
+src/test/java/pnnh/mcbilingual/freeze/TextHitTest.java
+  s_26512744bd45ea::t_efaa280939e206 1-38
+src/main/java/pnnh/mcbilingual/freeze/mixin/ChatOwnerMixin.java
+  s_26512744bd45ea::t_157af913a4b136 1-38
+src/main/java/pnnh/mcbilingual/freeze/mixin/KeyboardInputFreezeMixin.java
+  s_26512744bd45ea::t_f3e576fedc3093 1-31
+specs/006-frozen-ui-lookup/spec.md
+  s_26512744bd45ea::t_14158413e5b45d 1-135
+  s_26512744bd45ea::t_a86ac685ec73a2 136
+src/main/java/pnnh/mcbilingual/freeze/FreezeKeyHandler.java
+  s_26512744bd45ea::t_0f1c12ccd3ae4a 1-126
+specs/006-frozen-ui-lookup/contracts/frozen-ui-lookup.md
+  s_26512744bd45ea::t_3b6dc499478b71 1-39
+src/main/java/pnnh/mcbilingual/freeze/SentenceResolver.java
+  s_26512744bd45ea::t_c73e412eec8885 1-147
+  s_26512744bd45ea::t_b45d845627b572 148-150
+src/main/resources/mcbilingual-freeze.mixins.json
+  s_26512744bd45ea::t_f885324b696fdc 1-23
+src/main/java/pnnh/mcbilingual/freeze/mixin/ScreenHudCaptureMixin.java
+  s_26512744bd45ea::t_bde70e53f9ba2c 1-29
+src/main/java/pnnh/mcbilingual/freeze/ComponentSentences.java
+  s_26512744bd45ea::t_d47bf06e5e72f0 1-135
+src/main/java/pnnh/mcbilingual/freeze/FreezeFrames.java
+  s_26512744bd45ea::t_15bf516aff2ea8 1-188
+src/main/java/pnnh/mcbilingual/freeze/mixin/GuiGraphicsCaptureMixin.java
+  s_26512744bd45ea::t_e28c323fd81f0d 1-81
+src/main/java/pnnh/mcbilingual/freeze/mixin/MouseLookFreezeMixin.java
+  s_26512744bd45ea::t_6984a3599e1021 1-84
+src/main/java/pnnh/mcbilingual/freeze/mixin/GameRendererFreezeMixin.java
+  s_26512744bd45ea::t_6d581fb36d0411 1-78
+src/main/java/pnnh/mcbilingual/freeze/UiSentence.java
+  s_26512744bd45ea::t_7bcefbdc08b025 1-8
+specs/006-frozen-ui-lookup/research.md
+  s_26512744bd45ea::t_5dbe06d62f78fb 1-45
+  s_26512744bd45ea::t_3c32abb546a984 46-48
+src/main/java/pnnh/mcbilingual/freeze/TextHit.java
+  s_26512744bd45ea::t_7514666d4a7a82 1-42
+src/main/java/pnnh/mcbilingual/freeze/FreezeSession.java
+  s_26512744bd45ea::t_1b892dec3b2a85 1-79
+src/main/java/pnnh/mcbilingual/freeze/mixin/FontCaptureMixin.java
+  s_26512744bd45ea::t_1279fb77cd9662 1-38
+specs/006-frozen-ui-lookup/quickstart.md
+  s_26512744bd45ea::t_bb5bf447c5ab7a 1-44
+specs/006-frozen-ui-lookup/data-model.md
+  s_26512744bd45ea::t_6617dda890dc84 1-42
+src/main/java/pnnh/mcbilingual/freeze/mixin/TooltipOwnerMixin.java
+  s_26512744bd45ea::t_ad662953d19aea 1-59
+  s_26512744bd45ea::t_01d7d78ace3e2e 60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8c8645ef1d944c7396fe67d4a5c08e9336f5e66c",
+  "prompts": {},
+  "humans": {
+    "h_6465a203f88bd5": {
+      "author": "larry <xspanni@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_26512744bd45ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a16255-1a6b-7f10-94ab-4bc6f45b4985",
+        "model": "unknown"
+      },
+      "human_author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
