@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pnnh.mcbilingual.gametest.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "GameTestHooksMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -14,6 +14,7 @@ When Jade is installed, looked-at block and entity names get the same second lin
 When JEI is installed, item search also matches the other language, pinyin, and initials.
 A hotkey switches the whole client between Chinese and English without reloading resource packs.
 When AE2 is installed, the ME terminal item search uses the same Chinese, English, and pinyin terms.
+When Integrated Terminals is installed, the storage terminal name search uses those terms too.
 If Polyglot Tooltip or Language Reload is installed, this mod stands down.
 '''
 
@@ -52,6 +53,13 @@ If Polyglot Tooltip or Language Reload is installed, this mod stands down.
     ordering="NONE"
     side="CLIENT"
 
+[[dependencies.${mod_id}]]
+    modId="integratedterminals"
+    type="optional"
+    versionRange="[1.10.0,1.11.0)"
+    ordering="NONE"
+    side="CLIENT"
+
 [[accessTransformers]]
 file="META-INF/accesstransformer.cfg"
 
@@ -63,3 +71,9 @@ file="META-INF/accesstransformer.cfg"
 
 [[mixins]]
     config="${mod_id}-ae2.mixins.json"
+
+[[mixins]]
+    config="${mod_id}-integratedterminals.mixins.json"
+
+[[mixins]]
+    config="${mod_id}-gametest.mixins.json"

@@ -131,14 +131,24 @@ dependencies {
     localRuntime "maven.modrinth:guideme:${guideme_version}"
 
     // Separate mods at dev time. Not compile dependencies and not shipped.
-    // I18nUpdateMod 3.7.0 only has fabric.mod.json. NeoForge 21.1.251 skips that jar.
-    // Chinese for this session comes from each mod's own lang files plus the pack below.
+    // I18nUpdateMod 3.7.0 only has fabric.mod.json, so NeoForge 21.1.251 skips it.
+    // I18nAutoUpdateMod 1.2.0 calls FMLLoader.getCurrent(), which loader 4.0.44 does not have.
+    // Its jar is not a dependency. The task below merges the same Forge packs it would.
     localRuntime "curse.maven:minecolonies-245506:${minecolonies_file}"
     localRuntime "curse.maven:structurize-298744:${structurize_file}"
     localRuntime "curse.maven:blockui-522992:${blockui_file}"
     localRuntime "curse.maven:domum-ornamentum-527361:${domum_ornamentum_file}"
     localRuntime "curse.maven:multi-piston-303278:${multipiston_file}"
     localRuntime "curse.maven:towntalk-900364:${towntalk_file}"
+
+    // Integrated Terminals is optional. compileOnly is only for the client mixin.
+    // The other four are dev runtime only and are not published.
+    compileOnly "maven.modrinth:integrated-terminals:${integratedterminals_version}"
+    localRuntime "maven.modrinth:integrated-terminals:${integratedterminals_version}"
+    localRuntime "maven.modrinth:cyclops-core:${cyclopscore_version}"
+    localRuntime "maven.modrinth:integrated-dynamics:${integrateddynamics_version}"
+    localRuntime "maven.modrinth:common-capabilities:${commoncapabilities_version}"
+    localRuntime "maven.modrinth:integrated-tunnels:${integratedtunnels_version}"
 }
 
 tasks.named("test") {
@@ -149,42 +159,87 @@ def languagePack = layout.projectDirectory.file(
         "run/resourcepacks/Minecraft-Mod-Language-Modpack-1-21.zip").asFile
 def clientOptions = layout.projectDirectory.file("run/options.txt").asFile
 
-// CC BY-NC-SA resource pack. Dev client only. The run/ directory is not committed.
+// CC BY-NC-SA resource packs. Dev client only. The run/ directory is not committed.
+// I18nAutoUpdateMod selects Forge packs 1.21, then 1.20, then 1.19 for Minecraft 1.21.1.
+// The 1.21 pack has no Domum Ornamentum text. The 1.20 pack does. The first copy of a path wins.
 tasks.register("downloadLanguagePack") {
     outputs.file(languagePack)
+    outputs.upToDateWhen { false }
     inputs.file(clientOptions).optional(true)
     doLast {
-        if (!languagePack.exists() || languagePack.length() == 0) {
-            languagePack.parentFile.mkdirs()
-            def url = "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/download/autobuild/Minecraft-Mod-Language-Modpack-1-21.zip"
-            java.net.URI.create(url).toURL().withInputStream { input ->
-                languagePack.withOutputStream { output -> output << input }
-            }
-        }
-        // The published pack says format 33 and support [34, 37]. Minecraft 1.21.1
-        // then treats it as 33 and drops it. The dev copy uses format 34.
-        def source = new java.util.zip.ZipFile(languagePack)
-        def meta = source.getEntry("pack.mcmeta")
-        def metaText = meta == null ? "" : source.getInputStream(meta).getText("UTF-8")
-        if (metaText.contains('"pack_format": 33')) {
-            def rewritten = metaText.replace('"pack_format": 33', '"pack_format": 34')
-            def temp = new File(languagePack.parentFile, languagePack.name + ".tmp")
-            def output = new java.util.zip.ZipOutputStream(new java.io.FileOutputStream(temp))
-            source.entries().each { entry ->
-                output.putNextEntry(new java.util.zip.ZipEntry(entry.name))
-                if (entry.name == "pack.mcmeta") {
-                    output.write(rewritten.getBytes("UTF-8"))
-                } else {
-                    output.write(source.getInputStream(entry).bytes)
+        def sources = [
+                [zip: "Minecraft-Mod-Language-Modpack-1-21.zip", md5: "1.21.md5"],
+                [zip: "Minecraft-Mod-Language-Modpack-1-20.zip", md5: "1.20.md5"],
+                [zip: "Minecraft-Mod-Language-Modpack-1-19.zip", md5: "1.19.md5"],
+        ]
+        def root = "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/download/autobuild/"
+        languagePack.parentFile.mkdirs()
+        def cache = new File(languagePack.parentFile, ".cache")
+        cache.mkdirs()
+        def stale = !languagePack.exists() || languagePack.length() == 0
+        def cachedZips = []
+        sources.each { source ->
+            def md5File = new File(cache, source.md5)
+            def zipFile = new File(cache, source.zip)
+            def remoteMd5 = java.net.URI.create(root + source.md5).toURL().text.trim()
+            def localMd5 = md5File.exists() ? md5File.getText("UTF-8").trim() : ""
+            if (localMd5 != remoteMd5 || !zipFile.exists() || zipFile.length() == 0) {
+                def part = new File(cache, source.zip + ".part")
+                java.net.URI.create(root + source.zip).toURL().withInputStream { input ->
+                    part.withOutputStream { output -> output << input }
                 }
-                output.closeEntry()
+                if (zipFile.exists()) {
+                    zipFile.delete()
+                }
+                if (!part.renameTo(zipFile)) {
+                    throw new GradleException("Could not store ${source.zip}")
+                }
+                md5File.write(remoteMd5 + "\n", "UTF-8")
+                stale = true
+            }
+            cachedZips << zipFile
+        }
+        if (stale) {
+            def temp = new File(languagePack.parentFile, languagePack.name + ".tmp")
+            def seen = new HashSet<String>()
+            def output = new java.util.zip.ZipOutputStream(new java.io.FileOutputStream(temp))
+            try {
+                cachedZips.each { zipFile ->
+                    def source = new java.util.zip.ZipFile(zipFile)
+                    try {
+                        source.entries().each { entry ->
+                            if (entry.directory || !seen.add(entry.name)) {
+                                return
+                            }
+                            output.putNextEntry(new java.util.zip.ZipEntry(entry.name))
+                            if (entry.name == "pack.mcmeta") {
+                                // The published 1.21 pack says format 33 and support [34, 37].
+                                // Minecraft 1.21.1 then treats it as 33 and drops it.
+                                def text = source.getInputStream(entry).getText("UTF-8")
+                                        .replace('"pack_format": 33', '"pack_format": 34')
+                                output.write(text.getBytes("UTF-8"))
+                            } else {
+                                output.write(source.getInputStream(entry).bytes)
+                            }
+                            output.closeEntry()
+                        }
+                    } finally {
+                        source.close()
+                    }
+                }
+            } catch (Exception exception) {
+                output.close()
+                temp.delete()
+                throw exception
             }
             output.close()
-            source.close()
-            languagePack.delete()
-            temp.renameTo(languagePack)
-        } else {
-            source.close()
+            if (languagePack.exists() && !languagePack.delete()) {
+                temp.delete()
+                throw new GradleException("Could not replace ${languagePack}")
+            }
+            if (!temp.renameTo(languagePack)) {
+                throw new GradleException("Could not replace ${languagePack}")
+            }
         }
         if (!clientOptions.exists()) {
             return
