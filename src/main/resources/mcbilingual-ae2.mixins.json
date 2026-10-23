@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pnnh.mcbilingual.integration.ae2.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "pnnh.mcbilingual.integration.ae2.Ae2MixinPlugin",
+  "mixins": [],
+  "client": [
+    "Ae2NameSearchAccessor",
+    "Ae2RepoSearchMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

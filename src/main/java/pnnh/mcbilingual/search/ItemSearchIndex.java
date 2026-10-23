@@ -2,6 +2,7 @@ package pnnh.mcbilingual.search;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -53,6 +54,30 @@ public final class ItemSearchIndex {
             return List.of();
         }
         return byDescriptionId.getOrDefault(descriptionId, List.of());
+    }
+
+    /**
+     * True when {@code query} is contained in one of the already built search strings.
+     * Matching does not rebuild those strings.
+     */
+    public static boolean matches(String descriptionId, String query) {
+        return anyContains(terms(descriptionId), query);
+    }
+
+    public static boolean anyContains(List<String> terms, String query) {
+        if (terms == null || terms.isEmpty() || query == null) {
+            return false;
+        }
+        String folded = query.strip().toLowerCase(Locale.ROOT);
+        if (folded.isEmpty()) {
+            return false;
+        }
+        for (String term : terms) {
+            if (term != null && term.contains(folded)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int size() {

@@ -20,6 +20,7 @@ import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 import pnnh.mcbilingual.MCBilingual;
+import pnnh.mcbilingual.compat.RivalMods;
 import pnnh.mcbilingual.language.LanguageTexts;
 
 /**
@@ -34,6 +35,9 @@ public final class ItemTooltipNames {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onItemTooltip(ItemTooltipEvent event) {
+        if (RivalMods.isBlocked()) {
+            return;
+        }
         ItemStack stack = event.getItemStack();
         if (stack.isEmpty()) {
             return;
@@ -49,6 +53,9 @@ public final class ItemTooltipNames {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGatherComponents(RenderTooltipEvent.GatherComponents event) {
+        if (RivalMods.isBlocked()) {
+            return;
+        }
         ItemStack stack = event.getItemStack();
         if (stack.isEmpty()) {
             return;
@@ -73,6 +80,14 @@ public final class ItemTooltipNames {
         int insertAt = Math.min(1, elements.size());
         for (int i = moved.size() - 1; i >= 0; i--) {
             elements.add(insertAt, moved.get(i));
+        }
+        int cursor = Math.min(insertAt + moved.size(), elements.size());
+        for (SecondaryNameLine line : lines) {
+            if (containsLine(elements, line)) {
+                continue;
+            }
+            elements.add(cursor, Either.left(grayLine(line.text())));
+            cursor++;
         }
     }
 
@@ -100,6 +115,17 @@ public final class ItemTooltipNames {
         String text = line.getString();
         for (SecondaryNameLine candidate : lines) {
             if (candidate.text().equals(text)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean containsLine(
+            List<Either<FormattedText, TooltipComponent>> elements,
+            SecondaryNameLine line) {
+        for (Either<FormattedText, TooltipComponent> element : elements) {
+            if (matchesLine(element, List.of(line))) {
                 return true;
             }
         }

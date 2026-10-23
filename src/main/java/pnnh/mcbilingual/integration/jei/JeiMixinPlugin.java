@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import net.neoforged.fml.loading.LoadingModList;
 
+import pnnh.mcbilingual.compat.RivalMods;
+
 /**
  * Skips JEI mixins when the mod is not installed, so the client still reaches a world.
  */
@@ -18,7 +20,7 @@ public final class JeiMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         LoadingModList mods = LoadingModList.get();
-        jeiLoaded = mods != null && mods.getModFileById("jei") != null;
+        jeiLoaded = mods != null && mods.getModFileById("jei") != null && !RivalMods.isBlocked();
     }
 
     @Override

@@ -13,6 +13,8 @@ Client-side Chinese and English names for item tooltips.
 When Jade is installed, looked-at block and entity names get the same second line.
 When JEI is installed, item search also matches the other language, pinyin, and initials.
 A hotkey switches the whole client between Chinese and English without reloading resource packs.
+When AE2 is installed, the ME terminal item search uses the same Chinese, English, and pinyin terms.
+If Polyglot Tooltip or Language Reload is installed, this mod stands down.
 '''
 
 [[dependencies.${mod_id}]]
@@ -43,6 +45,13 @@ A hotkey switches the whole client between Chinese and English without reloading
     ordering="AFTER"
     side="CLIENT"
 
+[[dependencies.${mod_id}]]
+    modId="ae2"
+    type="optional"
+    versionRange="[19.2.18,20)"
+    ordering="NONE"
+    side="CLIENT"
+
 [[accessTransformers]]
 file="META-INF/accesstransformer.cfg"
 
@@ -51,3 +60,6 @@ file="META-INF/accesstransformer.cfg"
 
 [[mixins]]
     config="${mod_id}-language.mixins.json"
+
+[[mixins]]
+    config="${mod_id}-ae2.mixins.json"
