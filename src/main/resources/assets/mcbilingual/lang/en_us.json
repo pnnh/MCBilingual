@@ -3,5 +3,22 @@
   "config.jade.plugin_mcbilingual.jade_entity_name": "Entity secondary name",
   "key.categories.mcbilingual": "MCBilingual",
   "key.mcbilingual.switch_language": "Switch Chinese / English",
-  "key.mcbilingual.freeze_ui": "Freeze interface and look up the other language"
+  "key.mcbilingual.freeze_ui": "Freeze interface and look up the other language",
+  "key.mcbilingual.freeze_lookup_mode": "Freeze: toggle word / unit lookup",
+  "mcbilingual.config.extended_translation": "Extended translation (local Ollama)",
+  "mcbilingual.config.request_timeout_ms": "Ollama text request timeout (ms)",
+  "mcbilingual.config.vision_timeout_ms": "Ollama vision request timeout (ms)",
+  "mcbilingual.config.ollama_base_url": "Ollama base URL",
+  "mcbilingual.freeze.mode.word": "Word",
+  "mcbilingual.freeze.mode.unit": "Unit",
+  "mcbilingual.freeze.loading": "Translating…",
+  "mcbilingual.freeze.status.text_recognizing": "Recognizing text…",
+  "mcbilingual.freeze.status.image_recognizing": "Recognizing image…",
+  "mcbilingual.freeze.timeout": "Translation timed out",
+  "mcbilingual.freeze.status.text_timeout": "Text translation timed out",
+  "mcbilingual.freeze.status.image_timeout": "Image recognition timed out",
+  "mcbilingual.freeze.failed": "Translation failed (is Ollama running?)",
+  "mcbilingual.freeze.status.text_failed": "Text translation failed (is Ollama running?)",
+  "mcbilingual.freeze.status.image_failed": "Image recognition failed (is Ollama / qwen2.5vl running?)",
+  "mcbilingual.freeze.unavailable": "Cannot translate"
 }

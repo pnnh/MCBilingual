@@ -18,10 +18,14 @@ final class JadeSecondaryNames {
     }
 
     static void add(ITooltip tooltip, ResourceLocation tag, String title, String key) {
+        add(tooltip, tag, title, key == null || key.isBlank() ? List.of() : List.of(key));
+    }
+
+    static void add(ITooltip tooltip, ResourceLocation tag, String title, List<String> keys) {
         if (!tooltip.get(tag).isEmpty()) {
             return;
         }
-        List<SecondaryNameLine> lines = LanguageTexts.get().secondaryLines(title, key);
+        List<SecondaryNameLine> lines = LanguageTexts.get().secondaryLines(title, keys);
         if (lines.isEmpty()) {
             return;
         }

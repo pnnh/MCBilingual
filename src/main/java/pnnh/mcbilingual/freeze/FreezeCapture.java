@@ -69,6 +69,13 @@ public final class FreezeCapture {
         owners.remove(component);
     }
 
+    /** Pop whatever was last pushed (for synthetic String-draw owners). */
+    public static void popTopOwner() {
+        if (!owners.isEmpty()) {
+            owners.pop();
+        }
+    }
+
     public static void pushScissor(int minX, int minY, int maxX, int maxY) {
         if (!recording()) {
             clips.push(Clip.NONE);
@@ -131,10 +138,18 @@ public final class FreezeCapture {
         if (component == null) {
             component = sequences.get(text);
         }
-        if (component == null) {
-            return;
+        Optional<UiSentence> sentence;
+        if (component != null) {
+            sentence = sentences.computeIfAbsent(component, ComponentSentences::from);
+        } else {
+            // Mod GUIs (e.g. Integrated Dynamics guides) often draw sequences
+            // without a Component owner. Keep the visible string for word / Ollama.
+            String visible = sequenceText(text);
+            if (visible.isBlank()) {
+                return;
+            }
+            sentence = Optional.of(new UiSentence("", visible));
         }
-        Optional<UiSentence> sentence = sentences.computeIfAbsent(component, ComponentSentences::from);
         if (sentence.isEmpty()) {
             return;
         }
@@ -169,6 +184,21 @@ public final class FreezeCapture {
             return;
         }
         building.add(new TextHit(left, top, width, height, sentence.get(), order++));
+    }
+
+    /**
+     * Rebuild the drawn string from a visual sequence. Never used as a translation key.
+     */
+    static String sequenceText(FormattedCharSequence sequence) {
+        if (sequence == null) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        sequence.accept((index, style, codePoint) -> {
+            builder.appendCodePoint(codePoint);
+            return true;
+        });
+        return builder.toString().strip();
     }
 
     public static List<TextHit> latestHits() {

@@ -44,8 +44,20 @@ public final class ComponentSentences {
         }
         Node node = read(component, table, new HashSet<>());
         String visible = component.getString();
-        return SentenceResolver.resolve(current, key -> pattern(table, key), node, visible)
-                .map(text -> new UiSentence(text, visible == null ? "" : visible.strip()));
+        if (visible == null || visible.isBlank()) {
+            return Optional.empty();
+        }
+        String stripped = visible.strip();
+        Optional<String> counterpart = SentenceResolver.resolve(current, key -> pattern(table, key), node, visible);
+        // Keep visible literals for word / Ollama fallback; empty counterpart means no pack unit.
+        return Optional.of(new UiSentence(counterpart.orElse(""), stripped));
+    }
+
+    /**
+     * True when the sentence has a non-blank language-pack counterpart.
+     */
+    public static boolean hasCounterpart(UiSentence sentence) {
+        return sentence != null && sentence.counterpart() != null && !sentence.counterpart().isBlank();
     }
 
     private static Optional<String> pattern(ClientLanguage table, String key) {

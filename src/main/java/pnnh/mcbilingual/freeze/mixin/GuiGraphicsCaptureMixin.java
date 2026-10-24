@@ -14,8 +14,8 @@ import net.minecraft.network.chat.FormattedText;
 import pnnh.mcbilingual.freeze.FreezeCapture;
 
 /**
- * String and sequence overloads do not name a component, so they do not push an owner.
- * Buttons draw a centered component, which never calls the component {@code drawString}.
+ * Component and centered draws push owners. Plain String draws get a literal owner
+ * so freeze lookup can still see the visible text (many mod books use String draws).
  */
 @Mixin(GuiGraphics.class)
 public class GuiGraphicsCaptureMixin {
@@ -25,6 +25,26 @@ public class GuiGraphicsCaptureMixin {
     private void mcbilingual$pushString(
             Font font, Component text, int x, int y, int color, boolean dropShadow, CallbackInfoReturnable<Integer> callback) {
         FreezeCapture.pushOwner(text);
+    }
+
+    @Inject(
+            method = "drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
+            at = @At("HEAD"))
+    private void mcbilingual$pushPlainString(
+            Font font, String text, int x, int y, int color, boolean dropShadow, CallbackInfoReturnable<Integer> callback) {
+        if (text != null && !text.isBlank()) {
+            FreezeCapture.pushOwner(Component.literal(text));
+        }
+    }
+
+    @Inject(
+            method = "drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
+            at = @At("RETURN"))
+    private void mcbilingual$popPlainString(
+            Font font, String text, int x, int y, int color, boolean dropShadow, CallbackInfoReturnable<Integer> callback) {
+        if (text != null && !text.isBlank()) {
+            FreezeCapture.popTopOwner();
+        }
     }
 
     @Inject(

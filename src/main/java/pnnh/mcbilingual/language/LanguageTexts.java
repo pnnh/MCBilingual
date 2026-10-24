@@ -9,6 +9,7 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.ClientLanguage;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -74,6 +75,7 @@ public final class LanguageTexts extends SimplePreparableReloadListener<Language
     /**
      * Returns the trimmed translation, or empty when the key is absent.
      * A value equal to the key is treated as missing so the raw key is never shown.
+     * Component-valued language entries are flattened the same way the freeze lookup does.
      */
     public Optional<String> translation(String languageCode, String key) {
         if (!ready || key == null || key.isBlank()) {
@@ -84,10 +86,18 @@ public final class LanguageTexts extends SimplePreparableReloadListener<Language
             return Optional.empty();
         }
         String value = language.getOrDefault(key, null);
-        if (value == null || value.isBlank() || value.equals(key)) {
+        if (value != null && !value.isBlank() && !value.equals(key)) {
+            return Optional.of(value.strip());
+        }
+        Component component = language.getComponent(key);
+        if (component == null) {
             return Optional.empty();
         }
-        return Optional.of(value.strip());
+        String fromComponent = component.getString();
+        if (fromComponent == null || fromComponent.isBlank() || fromComponent.equals(key)) {
+            return Optional.empty();
+        }
+        return Optional.of(fromComponent.strip());
     }
 
     public List<SecondaryNameLine> secondaryLines(String title, String translationKey) {
@@ -100,6 +110,23 @@ public final class LanguageTexts extends SimplePreparableReloadListener<Language
                 translationKey,
                 translation(LanguageCodes.ZH_CN, translationKey).orElse(null),
                 translation(LanguageCodes.EN_US, translationKey).orElse(null));
+    }
+
+    /**
+     * Tries each candidate key until one yields a secondary line. Earlier keys win
+     * so title-component keys beat a bare {@code Item#getDescriptionId()}.
+     */
+    public List<SecondaryNameLine> secondaryLines(String title, List<String> translationKeys) {
+        if (!ready || translationKeys == null || translationKeys.isEmpty()) {
+            return List.of();
+        }
+        for (String translationKey : translationKeys) {
+            List<SecondaryNameLine> lines = secondaryLines(title, translationKey);
+            if (!lines.isEmpty()) {
+                return lines;
+            }
+        }
+        return List.of();
     }
 
     @Override

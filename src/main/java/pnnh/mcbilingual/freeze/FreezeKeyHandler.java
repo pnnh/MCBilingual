@@ -6,7 +6,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ChatScreen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,7 +19,8 @@ import pnnh.mcbilingual.switchlang.SwitchKeyHandler;
 import pnnh.mcbilingual.switchlang.mixin.KeyboardHandlerAccessor;
 
 /**
- * Unbound control uses F3+K. A bound key replaces that chord. Chat input ignores both.
+ * Unbound control uses F3+K (works in chat; the chord is consumed so K is not typed).
+ * A bound key replaces that chord.
  */
 public final class FreezeKeyHandler {
     public static final KeyMapping FREEZE_UI = new KeyMapping(
@@ -46,6 +46,17 @@ public final class FreezeKeyHandler {
         return FREEZE_UI.matches(key, scanCode);
     }
 
+    /**
+     * Escape ends an active freeze without closing the underlying screen.
+     * It never starts a freeze.
+     */
+    public static boolean acceptsEscape(int key, int action) {
+        return action == GLFW.GLFW_PRESS
+                && key == GLFW.GLFW_KEY_ESCAPE
+                && FreezeSession.get().active()
+                && !RivalMods.isBlocked();
+    }
+
     public static boolean acceptsMouse(int button, int action) {
         if (action != GLFW.GLFW_PRESS || FREEZE_UI.isUnbound() || !acceptingInput()) {
             return false;
@@ -54,7 +65,7 @@ public final class FreezeKeyHandler {
     }
 
     public static void handleKey(int key, int scanCode, int action) {
-        if (acceptsKey(key, scanCode, action)) {
+        if (acceptsEscape(key, action) || acceptsKey(key, scanCode, action)) {
             FreezeSession.get().requestToggle();
         }
     }
@@ -72,23 +83,19 @@ public final class FreezeKeyHandler {
         }
     }
 
+    /**
+     * While F3 is held, chat must not receive the freeze letter as typed text.
+     */
+    public static boolean shouldSuppressChatChar(int codePoint) {
+        if (RivalMods.isBlocked() || !f3Held() || !FREEZE_UI.isUnbound()) {
+            return false;
+        }
+        return codePoint == 'k' || codePoint == 'K';
+    }
+
     @EventBusSubscriber(modid = MCBilingual.MOD_ID, value = Dist.CLIENT)
     public static final class Events {
         private Events() {
-        }
-
-        @SubscribeEvent
-        public static void onKey(InputEvent.Key event) {
-            if (RivalMods.isBlocked() || event.getAction() != GLFW.GLFW_PRESS) {
-                return;
-            }
-            if (FreezeSession.get().active()) {
-                return;
-            }
-            if (acceptsKey(event.getKey(), event.getScanCode(), event.getAction())) {
-                claimDebugKey();
-                FreezeSession.get().requestToggle();
-            }
         }
 
         @SubscribeEvent
@@ -110,10 +117,8 @@ public final class FreezeKeyHandler {
             return false;
         }
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft == null || minecraft.getOverlay() != null) {
-            return false;
-        }
-        return !(minecraft.screen instanceof ChatScreen);
+        // ChatScreen is allowed: freeze can target chat UGC, and F3+K must not type.
+        return minecraft != null && minecraft.getOverlay() == null;
     }
 
     private static boolean f3Held() {

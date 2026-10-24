@@ -1,18 +1,16 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 → 2.0.0
+- Version change: 2.0.0 → 2.1.0
 - Modified principles:
-  - I. Client Only → I. Client Only (rationale: bilingual learning aid)
-  - II. Translations Stay Outside → II. Game Language Packs Outside; Learner Aids May Ship
-  - III. Own the Behavior → unchanged in substance
-  - IV. Two Languages Until Expanded → IV. Two Languages Until Expanded
-    (explicitly allows freeze extended lookup/MT within zh_cn/en_us)
-  - V. Verify in a Client Session → unchanged in substance
-- Added sections: Purpose
+  - II. Game Language Packs Outside; Learner Aids May Ship
+    (allows optional local Ollama vision fallback; forbids bundling OCR engines;
+     requires distinct player-visible status for text vs image pipelines when specified)
+  - Purpose → mentions optional vision fallback
+  - IV → points at 007/008 plan notes
+- Added sections: none
 - Removed sections: none
 - Follow-up TODOs:
-  - Feature spec 007 for freeze word/sentence + Ollama (not written in this amendment)
-  - Align specs/006 FR-007/FR-008 with principle II when 007 is specified
+  - Feature 008: freeze vision fallback + status hints (Spec Kit)
 -->
 
 # MCBilingual Constitution
@@ -26,8 +24,10 @@ in a second language.
 
 Core display still prefers game and mod language packs already on the client.
 The mod MAY add learner aids that go beyond pack lookup: a bundled general
-dictionary, freeze-mode word and sentence lookup, and optional local machine
-translation for text that has no pack counterpart (including player UGC).
+dictionary, freeze-mode word and sentence lookup, optional local machine
+translation for text that has no pack counterpart (including player UGC), and
+— when a feature specification says so — an optional local **vision-model**
+fallback for UI that never exposes draw-path strings.
 
 ## Core Principles
 
@@ -62,20 +62,31 @@ Translation packs remain external data sources, not a vendored code base.
 - Optional **local** machine translation (Ollama on the player machine) for
   text with no pack counterpart, including player chat, renamed items, and
   handwritten book pages, under rules set by the feature specification.
+- Optional **local vision-model** fallback (Ollama VL on the player machine)
+  when the client draw path yields no usable primary-language string. The mod
+  MAY crop and send a freeze-frame region; the model MAY read and translate
+  that region. Vision fallback MUST stay sentence- or short-paragraph-scoped
+  as defined by the feature specification, MUST NOT require a native OCR
+  engine inside the published jar, and MUST remain disableable with other
+  extended-translation settings.
 
 Missing pack text MUST degrade to the available language, a dictionary or
-model result, or an explicit player-visible failure such as “无法翻译”. It
-MUST NOT crash the client. Item and tooltip secondary lines MUST NOT surface
-a raw translation key as the second language.
+model result, an explicit in-progress status, or an explicit player-visible
+failure such as “无法翻译”. It MUST NOT crash the client. Item and tooltip
+secondary lines MUST NOT surface a raw translation key as the second language.
 
-Optical character recognition (OCR) MUST NOT be used unless a later feature
-specification explicitly adds it. If no primary-language string can be taken
-from the client draw path, the UI MUST report that translation is unavailable
-instead of guessing from pixels.
+When extended lookup is in progress or fails, the freeze UI MUST tell the
+player **which pipeline** is running or failed (for example text recognition
+versus image recognition versus unavailable), so wait-time expectations match
+the path. Exact strings are set by the feature specification.
+
+A feature specification that enables vision fallback supersedes the older rule
+that forbade guessing from pixels. Until that feature exists, draw-path misses
+MUST NOT call a vision model.
 
 Rationale: pack text stays maintainable outside the mod; learner dictionary
-and optional local MT support immersion without turning the mod into a
-redistributed Chinese language pack.
+and optional local MT/VL support immersion without shipping language packs or
+OS-specific OCR binaries in the CurseForge/Modrinth jar.
 
 ### III. Own the Behavior
 
@@ -98,13 +109,14 @@ MUST NOT be copied in as a port.
 Until a later feature specification explicitly expands the set, the mod MUST
 support only Simplified Chinese (`zh_cn`) and English (`en_us`) for primary
 display, pack counterparts, learner dictionary direction, and extended
-translation.
+translation (including vision fallback output).
 
 A feature MUST stay inside its specification. Wider bilingual surfaces, font
 scaling, display-mode cycling, and extra mod integrations remain out of
 scope until a spec adds them. Freeze-mode word lookup, sentence or unit
-lookup, bundled dictionary, client config, and optional Ollama are in scope
-only when specified (see `docs/plan/Ollama集成.md` until that feature lands).
+lookup, bundled dictionary, client config, optional Ollama text models, and
+optional Ollama vision fallback are in scope only when specified (see
+`docs/plan/Ollama集成.md` and `specs/007-*` / `specs/008-*`).
 
 ### V. Verify in a Client Session
 
@@ -115,8 +127,9 @@ a substitute for the daily client check.
 
 Pure text transforms, such as pinyin or dictionary lookup over fixtures, MUST
 have an automated test that does not start the game. Player-visible claims
-MUST NOT be marked done from a compile alone. Optional Ollama paths MUST be
-checked at least once with the service present and once with it absent.
+MUST NOT be marked done from a compile alone. Optional Ollama text and vision
+paths MUST each be checked at least once with the service present and once
+with it absent when that feature is implemented.
 
 ## Additional Constraints
 
@@ -128,8 +141,8 @@ checked at least once with the service present and once with it absent.
 - Switching the displayed primary language MUST NOT run a full resource-pack
   reload.
 - Client-tunable behavior (including enabling or disabling optional Ollama
-  extended translation) MUST use a NeoForge client config when that feature
-  is implemented.
+  extended translation and vision fallback) MUST use a NeoForge client config
+  when that feature is implemented.
 - GPL and AGPL libraries and data MAY be used when a feature plan records the
   license and ships required notices. The published mod MAY adopt GPL or AGPL
   to stay compatible. Permissive licenses remain acceptable where they fit.
@@ -140,8 +153,13 @@ checked at least once with the service present and once with it absent.
   such as commercial COCA frequency dumps MUST NOT be redistributed in the
   mod jar.
 - Optional Ollama, when specified, MUST call a local endpoint only, use fixed
-  default model ids chosen in that specification, and MUST remain disableable
-  in client config. It MUST NOT be a hard load-time dependency of the mod.
+  default model ids chosen in that specification (separate ids for text word,
+  text sentence, and vision when applicable), and MUST remain disableable in
+  client config. It MUST NOT be a hard load-time dependency of the mod.
+- The published mod jar MUST NOT bundle a native OCR engine or OS-specific OCR
+  runtime. Pixel reading, when specified, MUST go through the player's local
+  Ollama vision model (or an equally local, player-installed tool named in the
+  feature plan).
 
 ## Development Workflow
 
@@ -174,4 +192,4 @@ The ratification date stays 2026-10-22. The amended date changes on every
 edit. Specs and plans are reviewed against the current version before
 implementation starts.
 
-**Version**: 2.0.0 | **Ratified**: 2026-10-22 | **Last Amended**: 2026-10-24
+**Version**: 2.1.0 | **Ratified**: 2026-10-22 | **Last Amended**: 2026-10-24

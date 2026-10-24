@@ -1,5 +1,7 @@
 package pnnh.mcbilingual.integration.jade;
 
+import java.util.List;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +16,7 @@ import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.config.IPluginConfig;
 
 import pnnh.mcbilingual.MCBilingual;
+import pnnh.mcbilingual.tooltip.ItemNameKeys;
 
 public enum JadeBlockNames implements IBlockComponentProvider {
     INSTANCE;
@@ -24,7 +27,7 @@ public enum JadeBlockNames implements IBlockComponentProvider {
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
         Query query = resolve(accessor);
-        JadeSecondaryNames.add(tooltip, TAG, query.title(), query.key());
+        JadeSecondaryNames.add(tooltip, TAG, query.title(), query.keys());
     }
 
     @Override
@@ -45,17 +48,17 @@ public enum JadeBlockNames implements IBlockComponentProvider {
             if (!fluidState.isEmpty()) {
                 FluidStack fluidStack = new FluidStack(fluidState.getType(), 1);
                 Component description = fluidStack.getFluidType().getDescription(fluidStack);
-                return new Query(description.getString(), fluidStack.getFluidType().getDescriptionId());
+                return new Query(description.getString(), List.of(fluidStack.getFluidType().getDescriptionId()));
             }
         }
 
         ItemStack picked = accessor.getPickedResult();
         if (!picked.isEmpty()) {
-            return new Query(picked.getHoverName().getString(), picked.getItem().getDescriptionId());
+            return new Query(picked.getHoverName().getString(), ItemNameKeys.candidates(picked.getHoverName(), picked));
         }
-        return new Query(block.getName().getString(), block.getDescriptionId());
+        return new Query(block.getName().getString(), List.of(block.getDescriptionId()));
     }
 
-    private record Query(String title, String key) {
+    private record Query(String title, List<String> keys) {
     }
 }

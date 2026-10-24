@@ -13,8 +13,8 @@ import net.minecraft.util.FormattedCharSequence;
 import pnnh.mcbilingual.freeze.FreezeCapture;
 
 /**
- * A string draw and a literal component have no translation key, so they produce no hit.
- * Finished text is not indexed back to a key.
+ * Records every GUI {@code drawInBatch} sequence. Missing Component owners still
+ * yield a visible-string hit (mod books); finished text is never reverse-looked-up as a key.
  */
 @Mixin(Font.class)
 public class FontCaptureMixin {

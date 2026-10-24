@@ -1,5 +1,7 @@
 package pnnh.mcbilingual.integration.jade;
 
+import java.util.List;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -11,6 +13,7 @@ import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.config.IPluginConfig;
 
 import pnnh.mcbilingual.MCBilingual;
+import pnnh.mcbilingual.tooltip.ItemNameKeys;
 
 public enum JadeEntityNames implements IEntityComponentProvider {
     INSTANCE;
@@ -21,7 +24,7 @@ public enum JadeEntityNames implements IEntityComponentProvider {
     @Override
     public void appendTooltip(ITooltip tooltip, EntityAccessor accessor, IPluginConfig config) {
         Query query = resolve(accessor.getEntity());
-        JadeSecondaryNames.add(tooltip, TAG, query.title(), query.key());
+        JadeSecondaryNames.add(tooltip, TAG, query.title(), query.keys());
     }
 
     @Override
@@ -38,12 +41,12 @@ public enum JadeEntityNames implements IEntityComponentProvider {
         if (entity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (!stack.isEmpty()) {
-                return new Query(stack.getHoverName().getString(), stack.getItem().getDescriptionId());
+                return new Query(stack.getHoverName().getString(), ItemNameKeys.candidates(stack.getHoverName(), stack));
             }
         }
-        return new Query(entity.getDisplayName().getString(), entity.getType().getDescriptionId());
+        return new Query(entity.getDisplayName().getString(), List.of(entity.getType().getDescriptionId()));
     }
 
-    private record Query(String title, String key) {
+    private record Query(String title, List<String> keys) {
     }
 }

@@ -46,8 +46,8 @@ public final class ItemTooltipNames {
         if (tooltip.isEmpty()) {
             return;
         }
-        List<SecondaryNameLine> lines = LanguageTexts.get()
-                .secondaryLines(tooltip.getFirst().getString(), stack.getItem().getDescriptionId());
+        Component title = tooltip.getFirst();
+        List<SecondaryNameLine> lines = LanguageTexts.get().secondaryLines(title.getString(), ItemNameKeys.candidates(title, stack));
         replaceLines(tooltip, lines);
     }
 
@@ -64,9 +64,11 @@ public final class ItemTooltipNames {
         if (elements.isEmpty()) {
             return;
         }
-        String title = plainText(elements.getFirst().left().orElse(null));
+        FormattedText titleText = elements.getFirst().left().orElse(null);
+        String title = plainText(titleText);
+        Component titleComponent = titleText instanceof Component component ? component : null;
         List<SecondaryNameLine> lines = LanguageTexts.get()
-                .secondaryLines(title, stack.getItem().getDescriptionId());
+                .secondaryLines(title, ItemNameKeys.candidates(titleComponent, stack));
         if (lines.isEmpty()) {
             return;
         }

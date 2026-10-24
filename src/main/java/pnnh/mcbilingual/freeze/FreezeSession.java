@@ -14,6 +14,8 @@ public final class FreezeSession {
     private boolean cursorWasGrabbed;
     private Object picture;
     private List<TextHit> hits = List.of();
+    private LookupMode lookupMode = LookupMode.WORD;
+    private long frameGeneration;
 
     private FreezeSession() {
     }
@@ -56,6 +58,8 @@ public final class FreezeSession {
         this.picture = picture;
         this.hits = List.copyOf(hits);
         this.cursorWasGrabbed = cursorWasGrabbed;
+        this.lookupMode = LookupMode.WORD;
+        this.frameGeneration++;
     }
 
     public void deactivate() {
@@ -63,6 +67,25 @@ public final class FreezeSession {
         picture = null;
         hits = List.of();
         cursorWasGrabbed = false;
+        lookupMode = LookupMode.WORD;
+    }
+
+    public long frameGeneration() {
+        return frameGeneration;
+    }
+
+    public LookupMode lookupMode() {
+        return lookupMode;
+    }
+
+    public void toggleLookupMode() {
+        lookupMode = lookupMode.toggle();
+    }
+
+    public void setLookupMode(LookupMode mode) {
+        if (mode != null) {
+            lookupMode = mode;
+        }
     }
 
     public Object picture() {

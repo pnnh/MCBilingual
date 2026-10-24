@@ -3,5 +3,22 @@
   "config.jade.plugin_mcbilingual.jade_entity_name": "实体第二语言名称",
   "key.categories.mcbilingual": "MCBilingual",
   "key.mcbilingual.switch_language": "切换中文 / 英文",
-  "key.mcbilingual.freeze_ui": "定格界面并查看另一种语言"
+  "key.mcbilingual.freeze_ui": "定格界面并查看另一种语言",
+  "key.mcbilingual.freeze_lookup_mode": "定格：切换取词 / 对照段",
+  "mcbilingual.config.extended_translation": "扩展翻译（本机 Ollama）",
+  "mcbilingual.config.request_timeout_ms": "Ollama 文本请求超时（毫秒）",
+  "mcbilingual.config.vision_timeout_ms": "Ollama 视觉请求超时（毫秒）",
+  "mcbilingual.config.ollama_base_url": "Ollama 地址",
+  "mcbilingual.freeze.mode.word": "取词",
+  "mcbilingual.freeze.mode.unit": "对照段",
+  "mcbilingual.freeze.loading": "翻译中…",
+  "mcbilingual.freeze.status.text_recognizing": "文本识别中…",
+  "mcbilingual.freeze.status.image_recognizing": "图片识别中…",
+  "mcbilingual.freeze.timeout": "翻译超时",
+  "mcbilingual.freeze.status.text_timeout": "文本翻译超时",
+  "mcbilingual.freeze.status.image_timeout": "图片识别超时",
+  "mcbilingual.freeze.failed": "翻译失败（Ollama 是否在运行？）",
+  "mcbilingual.freeze.status.text_failed": "文本翻译失败（Ollama 是否在运行？）",
+  "mcbilingual.freeze.status.image_failed": "图片识别失败（Ollama / qwen2.5vl 是否可用？）",
+  "mcbilingual.freeze.unavailable": "无法翻译"
 }

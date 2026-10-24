@@ -14,25 +14,37 @@ import net.minecraft.client.Minecraft;
 
 import pnnh.mcbilingual.freeze.FreezeKeyHandler;
 import pnnh.mcbilingual.freeze.FreezeSession;
+import pnnh.mcbilingual.freeze.LookupModeKeyHandler;
 
 /**
- * The first press is not frozen yet, so it still reaches the key event.
- * Later presses are handled here because that event returns while frozen.
+ * Consumes freeze / mode keys before ChatScreen can type them.
+ * While frozen, all other keys are swallowed.
  */
 @Mixin(KeyboardHandler.class)
 public class KeyboardHandlerFreezeMixin {
     @Inject(method = "keyPress(JIIII)V", at = @At("HEAD"), cancellable = true)
     private void mcbilingual$freezeKeys(long windowPointer, int key, int scanCode, int action, int modifiers, CallbackInfo callback) {
-        if (!FreezeSession.get().active()) {
-            return;
-        }
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft == null || windowPointer != minecraft.getWindow().getWindow()) {
             return;
         }
+        if (FreezeKeyHandler.acceptsEscape(key, action)) {
+            FreezeKeyHandler.handleKey(key, scanCode, action);
+            callback.cancel();
+            return;
+        }
+        // Must run even when ChatScreen is open so F3+K is not typed as "k"/"K".
         if (FreezeKeyHandler.acceptsKey(key, scanCode, action)) {
             FreezeKeyHandler.claimDebugKey();
             FreezeKeyHandler.handleKey(key, scanCode, action);
+            callback.cancel();
+            return;
+        }
+        if (!FreezeSession.get().active()) {
+            return;
+        }
+        if (LookupModeKeyHandler.acceptsKey(key, scanCode, action)) {
+            LookupModeKeyHandler.handleKey(key, scanCode, action);
             callback.cancel();
             return;
         }
@@ -42,12 +54,18 @@ public class KeyboardHandlerFreezeMixin {
 
     @Inject(method = "charTyped(JII)V", at = @At("HEAD"), cancellable = true)
     private void mcbilingual$freezeChars(long windowPointer, int codePoint, int modifiers, CallbackInfo callback) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft == null || windowPointer != minecraft.getWindow().getWindow()) {
+            return;
+        }
+        // F3+letter still emits a char into chat; drop K while the freeze chord is held.
+        if (FreezeKeyHandler.shouldSuppressChatChar(codePoint)) {
+            callback.cancel();
+            return;
+        }
         if (!FreezeSession.get().suppressInput()) {
             return;
         }
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft != null && windowPointer == minecraft.getWindow().getWindow()) {
-            callback.cancel();
-        }
+        callback.cancel();
     }
 }
