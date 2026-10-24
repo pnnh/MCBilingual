@@ -1,7 +1,7 @@
 # 定格扩展翻译与 Ollama（设计备忘）
 
 > 宪法依据：`.specify/memory/constitution.md` **v2.0.0**（Purpose + 原则 II）。  
-> 正式玩家可见规格尚未写；下一步用 Spec Kit 开 **007**，本文件在此之前作决策记录。  
+> 正式规格：`specs/007-freeze-extended-translate/`（与本文冲突时以 007 为准）。  
 > **本阶段不做 OCR。**
 
 ## 产品意图
@@ -73,5 +73,5 @@
 
 ## 后续
 
-1. `/speckit-specify`（或等价流程）写 **007** 玩家可见规格。  
-2. 计划与任务后再实现：客户端配置、词典打包、采集字面量、Ollama 客户端、定格 UI 模式切换。
+1. ~~写 007 规格与 plan~~（已完成）。  
+2. `/speckit-tasks` 生成 `tasks.md` 后再实现：客户端配置、词典打包、采集字面量、Ollama 客户端、定格 UI 模式切换。
