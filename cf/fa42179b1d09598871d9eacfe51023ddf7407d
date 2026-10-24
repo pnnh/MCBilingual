@@ -1,0 +1,21 @@
+.specify/memory/constitution.md
+  s_f7f00e0734edfb::t_16595de3f7ad62 3,5-15,20-31,40-55,57-64,66-69,71-74,76-78,99-101,103-107,116-119,130-144,156-159,177
+docs/plan/Ollama集成.md
+  s_f7f00e0734edfb::t_4537faebb11142 1-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cffa42179b1d09598871d9eacfe51023ddf7407d",
+  "prompts": {},
+  "sessions": {
+    "s_f7f00e0734edfb": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dfa8e6ac-0d4b-4283-8acf-6a378914bf39",
+        "model": "unknown"
+      },
+      "human_author": "pnnh <linyangz@outlook.com>"
+    }
+  }
+}
