@@ -1,0 +1,33 @@
+docs/plan/Ollama集成.md
+  s_f7f00e0734edfb::t_8aa8d3da970600 4,76-77
+specs/007-freeze-extended-translate/checklists/requirements.md
+  s_f7f00e0734edfb::t_220dbae8f53719 1-28
+specs/007-freeze-extended-translate/contracts/freeze-extended-translate.md
+  s_f7f00e0734edfb::t_1fa719fa891af6 1-41
+specs/007-freeze-extended-translate/data-model.md
+  s_f7f00e0734edfb::t_8d5740df9a28d3 1-59
+specs/007-freeze-extended-translate/plan.md
+  s_f7f00e0734edfb::t_e046d06379eb72 1-88
+specs/007-freeze-extended-translate/quickstart.md
+  s_f7f00e0734edfb::t_41fa283f68f2b3 1-37
+specs/007-freeze-extended-translate/research.md
+  s_f7f00e0734edfb::t_200509d6cb2032 1-43
+specs/007-freeze-extended-translate/spec.md
+  s_f7f00e0734edfb::t_68bdf5dd4a83ab 1-131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8463db5a179a9cbd255b5fd107f34c4f650788b5",
+  "prompts": {},
+  "sessions": {
+    "s_f7f00e0734edfb": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dfa8e6ac-0d4b-4283-8acf-6a378914bf39",
+        "model": "unknown"
+      },
+      "human_author": "pnnh <linyangz@outlook.com>"
+    }
+  }
+}
