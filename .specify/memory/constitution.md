@@ -1,16 +1,11 @@
 <!--
 Sync Impact Report
-- Version change: 2.0.0 → 2.1.0
-- Modified principles:
-  - II. Game Language Packs Outside; Learner Aids May Ship
-    (allows optional local Ollama vision fallback; forbids bundling OCR engines;
-     requires distinct player-visible status for text vs image pipelines when specified)
-  - Purpose → mentions optional vision fallback
-  - IV → points at 007/008 plan notes
-- Added sections: none
-- Removed sections: none
+- Version change: 2.1.0 → 2.1.1
+- Modified:
+  - Additional Constraints: optional integrations list includes JourneyMap when
+    specified; pinyin must not replace waypoint display names
 - Follow-up TODOs:
-  - Feature 008: freeze vision fallback + status hints (Spec Kit)
+  - Feature 011: JourneyMap waypoint pinyin search (implement tasks.md)
 -->
 
 # MCBilingual Constitution
@@ -135,9 +130,12 @@ with it absent when that feature is implemented.
 
 - Minecraft 1.21.1, NeoForge 21.1.251, Java 21.
 - Mod id `mcbilingual`, package `pnnh.mcbilingual`, client dist only.
-- Optional integrations (JEI, Jade) MUST load as optional. The mod MUST still
-  reach a world when they are absent.
-- Pinyin is search text only. It MUST NOT appear in tooltips or Jade.
+- Optional integrations (JEI, Jade, AE2, Integrated Terminals, JourneyMap, and
+  others named by a feature specification) MUST load as optional. The mod MUST
+  still reach a world when they are absent.
+- Pinyin is search text only. It MUST NOT appear in tooltips, Jade, or as a
+  replacement for JourneyMap waypoint display names when that search feature
+  exists.
 - Switching the displayed primary language MUST NOT run a full resource-pack
   reload.
 - Client-tunable behavior (including enabling or disabling optional Ollama
@@ -192,4 +190,4 @@ The ratification date stays 2026-10-22. The amended date changes on every
 edit. Specs and plans are reviewed against the current version before
 implementation starts.
 
-**Version**: 2.1.0 | **Ratified**: 2026-10-22 | **Last Amended**: 2026-10-24
+**Version**: 2.1.1 | **Ratified**: 2026-10-22 | **Last Amended**: 2026-10-25

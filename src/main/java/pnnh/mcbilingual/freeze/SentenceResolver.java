@@ -55,16 +55,32 @@ public final class SentenceResolver {
         if (counterpartLanguage(currentLanguage) == null || node == null || !containsKey(node)) {
             return Optional.empty();
         }
+        Optional<String> expanded = tryExpand(node, patterns);
+        if (expanded.isEmpty()) {
+            return Optional.empty();
+        }
+        String trimmed = expanded.get();
+        String current = visible == null ? "" : visible.strip();
+        if (trimmed.equals(current)) {
+            return Optional.empty();
+        }
+        return Optional.of(trimmed);
+    }
+
+    /**
+     * Expand a node tree with {@code %s} / {@code %1$s} patterns from {@code patterns}.
+     * Used by freeze counterparts and bilingual secondary names (e.g. Jade spawner).
+     */
+    public static Optional<String> tryExpand(Node node, Patterns patterns) {
+        if (node == null || patterns == null || !containsKey(node)) {
+            return Optional.empty();
+        }
         String expanded = expand(node, patterns);
         if (expanded == null) {
             return Optional.empty();
         }
         String trimmed = expanded.strip();
         if (trimmed.isEmpty()) {
-            return Optional.empty();
-        }
-        String current = visible == null ? "" : visible.strip();
-        if (trimmed.equals(current)) {
             return Optional.empty();
         }
         return Optional.of(trimmed);

@@ -2,6 +2,7 @@ package pnnh.mcbilingual.integration.jade;
 
 import java.util.List;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -41,12 +42,14 @@ public enum JadeEntityNames implements IEntityComponentProvider {
         if (entity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (!stack.isEmpty()) {
-                return new Query(stack.getHoverName().getString(), ItemNameKeys.candidates(stack.getHoverName(), stack));
+                Component hover = stack.getHoverName();
+                return new Query(hover, ItemNameKeys.candidates(hover, stack));
             }
         }
-        return new Query(entity.getDisplayName().getString(), List.of(entity.getType().getDescriptionId()));
+        Component name = entity.getDisplayName();
+        return new Query(name, List.of(entity.getType().getDescriptionId()));
     }
 
-    private record Query(String title, List<String> keys) {
+    private record Query(Component title, List<String> keys) {
     }
 }

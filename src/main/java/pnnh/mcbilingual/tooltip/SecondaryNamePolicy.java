@@ -3,6 +3,7 @@ package pnnh.mcbilingual.tooltip;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import pnnh.mcbilingual.language.LanguageCodes;
 
@@ -10,6 +11,9 @@ import pnnh.mcbilingual.language.LanguageCodes;
  * Chooses which extra name lines to show. This class does not read game state.
  */
 public final class SecondaryNamePolicy {
+    /** Unreplaced {@code %s} / {@code %1$s} style tokens left in a pack string. */
+    private static final Pattern UNRESOLVED_FORMAT = Pattern.compile("%(?:\\d+\\$)?[A-Za-z]");
+
     private SecondaryNamePolicy() {
     }
 
@@ -50,6 +54,10 @@ public final class SecondaryNamePolicy {
         }
         String trimmed = text.strip();
         if (trimmed.isEmpty() || trimmed.equals(translationKey)) {
+            return;
+        }
+        // Never show raw pack templates such as "%s Spawner" / "%s刷怪笼".
+        if (UNRESOLVED_FORMAT.matcher(trimmed).find()) {
             return;
         }
         if (normalize(trimmed).equals(normalizedTitle)) {

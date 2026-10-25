@@ -141,6 +141,10 @@ dependencies {
     localRuntime "curse.maven:multi-piston-303278:${multipiston_file}"
     localRuntime "curse.maven:towntalk-900364:${towntalk_file}"
 
+    // JourneyMap is optional. compileOnly is only for the waypoint filter mixin.
+    compileOnly "maven.modrinth:journeymap:${journeymap_version}"
+    localRuntime "maven.modrinth:journeymap:${journeymap_version}"
+
     // Integrated Terminals is optional. compileOnly is only for the client mixin.
     // The other four are dev runtime only and are not published.
     compileOnly "maven.modrinth:integrated-terminals:${integratedterminals_version}"

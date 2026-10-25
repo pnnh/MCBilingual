@@ -17,11 +17,7 @@ final class JadeSecondaryNames {
     private JadeSecondaryNames() {
     }
 
-    static void add(ITooltip tooltip, ResourceLocation tag, String title, String key) {
-        add(tooltip, tag, title, key == null || key.isBlank() ? List.of() : List.of(key));
-    }
-
-    static void add(ITooltip tooltip, ResourceLocation tag, String title, List<String> keys) {
+    static void add(ITooltip tooltip, ResourceLocation tag, Component title, List<String> keys) {
         if (!tooltip.get(tag).isEmpty()) {
             return;
         }
@@ -31,11 +27,7 @@ final class JadeSecondaryNames {
         }
         int insertAt = tooltip.isEmpty() ? 0 : 1;
         for (int i = lines.size() - 1; i >= 0; i--) {
-            tooltip.add(insertAt, line(lines.get(i)), tag);
+            tooltip.add(insertAt, ItemTooltipNames.grayLine(lines.get(i).text()), tag);
         }
-    }
-
-    private static Component line(SecondaryNameLine name) {
-        return ItemTooltipNames.grayLine(name.text());
     }
 }

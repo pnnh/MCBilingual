@@ -48,6 +48,16 @@ class SecondaryNamePolicyTest {
     }
 
     @Test
+    void unresolvedFormatPlaceholdersAreOmitted() {
+        assertTrue(SecondaryNamePolicy.lines(
+                "Cave Spider Spawner",
+                LanguageCodes.EN_US,
+                "jade.spawner",
+                "%s刷怪笼",
+                "%s Spawner").isEmpty());
+    }
+
+    @Test
     void languageOutsideThePairShowsBothDistinctNames() {
         List<SecondaryNameLine> lines = SecondaryNamePolicy.lines("りんご", "ja_jp", KEY, "苹果", "Apple");
 

@@ -15,6 +15,8 @@ import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 
+import pnnh.mcbilingual.freeze.SentenceResolver;
+import pnnh.mcbilingual.freeze.SentenceResolver.Node;
 import pnnh.mcbilingual.search.FluidSearchIndex;
 import pnnh.mcbilingual.search.ItemSearchIndex;
 import pnnh.mcbilingual.tooltip.SecondaryNameLine;
@@ -127,6 +129,49 @@ public final class LanguageTexts extends SimplePreparableReloadListener<Language
             }
         }
         return List.of();
+    }
+
+    /**
+     * Prefer expanding {@code title}'s {@code %s} args into the other language (Jade spawner,
+     * etc.), then fall back to key-only lookup.
+     */
+    public List<SecondaryNameLine> secondaryLines(Component title, List<String> translationKeys) {
+        if (!ready) {
+            return List.of();
+        }
+        String titleText = title == null ? "" : title.getString();
+        List<SecondaryNameLine> fromComponent = secondaryLinesFromComponent(title, titleText);
+        if (!fromComponent.isEmpty()) {
+            return fromComponent;
+        }
+        return secondaryLines(titleText, translationKeys);
+    }
+
+    private List<SecondaryNameLine> secondaryLinesFromComponent(Component title, String titleText) {
+        if (title == null) {
+            return List.of();
+        }
+        String other = SentenceResolver.counterpartLanguage(currentLanguage());
+        if (other == null) {
+            return List.of();
+        }
+        ClientLanguage table = table(other);
+        if (table == null) {
+            return List.of();
+        }
+        Node node = ComponentNodes.from(title, table);
+        Optional<String> formatted = SentenceResolver.tryExpand(node, key -> translation(other, key));
+        if (formatted.isEmpty()) {
+            return List.of();
+        }
+        String chinese = LanguageCodes.isChinese(other) ? formatted.get() : null;
+        String english = LanguageCodes.isEnglish(other) ? formatted.get() : null;
+        return SecondaryNamePolicy.lines(
+                titleText,
+                currentLanguage(),
+                "mcbilingual.formatted_name",
+                chinese,
+                english);
     }
 
     @Override

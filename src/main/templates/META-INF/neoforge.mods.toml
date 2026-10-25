@@ -15,6 +15,7 @@ When JEI is installed, item search also matches the other language, pinyin, and 
 A hotkey switches the whole client between Chinese and English without reloading resource packs.
 When AE2 is installed, the ME terminal item search uses the same Chinese, English, and pinyin terms.
 When Integrated Terminals is installed, the storage terminal name search uses those terms too.
+When JourneyMap is installed, waypoint manager search also matches Chinese names by pinyin and initials.
 If Polyglot Tooltip or Language Reload is installed, this mod stands down.
 '''
 
@@ -31,6 +32,13 @@ If Polyglot Tooltip or Language Reload is installed, this mod stands down.
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="journeymap"
+    type="optional"
+    versionRange="[1.21.1-6.0.0,)"
+    ordering="NONE"
+    side="CLIENT"
 
 [[accessTransformers]]
 file="META-INF/accesstransformer.cfg"
@@ -52,3 +60,6 @@ file="META-INF/accesstransformer.cfg"
 
 [[mixins]]
     config="${mod_id}-freeze.mixins.json"
+
+[[mixins]]
+    config="${mod_id}-journeymap.mixins.json"
