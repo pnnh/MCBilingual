@@ -4,6 +4,8 @@ import java.util.Optional;
 import java.util.function.ToIntFunction;
 
 import pnnh.mcbilingual.config.ClientConfig;
+import pnnh.mcbilingual.dictionary.LemmaResolution;
+import pnnh.mcbilingual.dictionary.WordCardFormatter;
 import pnnh.mcbilingual.translate.EnglishWords;
 import pnnh.mcbilingual.translate.EnglishWords.WordSpan;
 import pnnh.mcbilingual.translate.ExtendedTranslate;
@@ -11,8 +13,7 @@ import pnnh.mcbilingual.translate.MachineTranslationCache.Kind;
 import pnnh.mcbilingual.translate.MachineTranslationCache.Job;
 
 /**
- * Word-mode hint: dictionary first, then optional Ollama. Never returns pack unit text.
- * Never starts vision requests.
+ * Word-mode hint: rich lexicon card first, then optional Ollama. Never pack unit text / vision.
  */
 public final class WordLookup {
     public enum HintKind {
@@ -48,9 +49,12 @@ public final class WordLookup {
             return Hint.none();
         }
         String token = word.get().word();
-        Optional<String> gloss = ExtendedTranslate.dictionary().lookup(token);
-        if (gloss.isPresent()) {
-            return Hint.gloss(gloss.get());
+        Optional<LemmaResolution> hit = ExtendedTranslate.dictionary().lookupRich(token);
+        if (hit.isPresent()) {
+            String card = WordCardFormatter.format(hit.get());
+            if (!card.isBlank() && !card.equalsIgnoreCase(token)) {
+                return Hint.gloss(card);
+            }
         }
         if (!ClientConfig.extendedTranslation()) {
             return Hint.none();

@@ -2,23 +2,24 @@
 
 Bundled file: `src/main/resources/data/mcbilingual/dictionary/entries.tsv`
 
-Format: one entry per line, `english_word<TAB>chinese_gloss`, UTF-8. Lines starting with `#` are comments.
+## Row formats
+
+1. **Legacy**: `english_word<TAB>chinese_gloss`
+2. **Rich (preferred)**: `word<TAB>phonetic<TAB>pos<TAB>exchange<TAB>translation`
+
+- `exchange`: ECDICT-style, e.g. `d:tucked/p:tucked/i:tucking/3:tucks`
+- `translation`: Simplified Chinese; use `\n` in the field for multiple senses
+- Lines starting with `#` are comments
+- Encoding: UTF-8
 
 ## Recommended source
 
-Use [ECDICT](https://github.com/skywind3000/ECDICT) (MIT). Sort or filter by `frq` / `bnc` and keep the top ~50k–60k lemmas with a short `translation` field.
-
-Example outline:
-
-1. Download `ecdict.csv` from ECDICT releases.
-2. Keep rows with a numeric frequency rank under your cutoff.
-3. Write `word` and a single-line Chinese gloss into `entries.tsv`.
-4. Keep `LICENSE-ECDICT.txt` next to the TSV.
+Use [ECDICT](https://github.com/skywind3000/ECDICT) (MIT). Filter by `frq` / `bnc`, keep top ~50k–60k lemmas, map columns to the rich TSV. Keep `LICENSE-ECDICT.txt`.
 
 ## Do not ship
 
-Commercial **COCA** word-frequency products from wordfrequency.info — their license forbids redistributing the lists outside the purchasing organisation.
+Commercial **COCA** lists from wordfrequency.info.
 
-## Current repo
+## Runtime behaviour (009)
 
-`entries.tsv` starts as a curated common-UI sample so clients can verify word mode without a full ECDICT import. Replace it with a full truncated ECDICT export before a wide release.
+Lookup order: exact headword → exchange reverse index → conservative heuristics (`-ed`/`-ing`/`-s`…). UI shows a compact card (headword, pos, forms, senses).

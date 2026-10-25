@@ -259,7 +259,7 @@ public final class FreezeFrames {
         if (text == null || text.isBlank() || font == null) {
             return;
         }
-        int maxWidth = Math.max(40, Math.min(200, screenWidth - 8));
+        int maxWidth = Math.max(40, Math.min(280, screenWidth - 8));
         List<FormattedCharSequence> lines = font.split(Component.literal(text), maxWidth);
         if (lines.isEmpty()) {
             return;

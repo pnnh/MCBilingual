@@ -31,4 +31,26 @@ class LearnerDictionaryTest {
         assertTrue(dictionary.lookup("missing").isEmpty());
         assertTrue(dictionary.lookup(" ").isEmpty());
     }
+
+    @Test
+    void richRowResolvesInflectionViaExchange() throws Exception {
+        LearnerDictionary dictionary = LearnerDictionary.load(new ByteArrayInputStream(
+                "tuck\ttʌk\tv.\td:tucked/p:tucked/i:tucking\t① 塞进\n".getBytes(StandardCharsets.UTF_8)));
+
+        Optional<LemmaResolution> hit = dictionary.lookupRich("tucked");
+        assertTrue(hit.isPresent());
+        assertEquals("tuck", hit.get().entry().headword());
+        assertEquals(LemmaResolution.Via.EXCHANGE, hit.get().via());
+    }
+
+    @Test
+    void heuristicResolvesCitizens() throws Exception {
+        LearnerDictionary dictionary = LearnerDictionary.load(new ByteArrayInputStream(
+                "citizen\t\tn.\t\t公民\n".getBytes(StandardCharsets.UTF_8)));
+
+        Optional<LemmaResolution> hit = dictionary.lookupRich("citizens");
+        assertTrue(hit.isPresent());
+        assertEquals("citizen", hit.get().entry().headword());
+        assertEquals(LemmaResolution.Via.HEURISTIC, hit.get().via());
+    }
 }

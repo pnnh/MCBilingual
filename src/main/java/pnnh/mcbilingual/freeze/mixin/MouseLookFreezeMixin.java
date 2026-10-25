@@ -15,6 +15,7 @@ import net.minecraft.client.MouseHandler;
 
 import pnnh.mcbilingual.freeze.FreezeKeyHandler;
 import pnnh.mcbilingual.freeze.FreezeSession;
+import pnnh.mcbilingual.freeze.LookupModeHud;
 
 @Mixin(MouseHandler.class)
 public class MouseLookFreezeMixin {
@@ -65,11 +66,29 @@ public class MouseLookFreezeMixin {
         if (!FreezeSession.get().suppressInput()) {
             return;
         }
+        // NeoForge MouseButton.Pre may never run if we cancel onPress at HEAD.
+        // Handle the Word/Unit HUD here so clicks are not swallowed.
+        if (action == GLFW.GLFW_PRESS && button == GLFW.GLFW_MOUSE_BUTTON_LEFT && tryLookupModeHudClick(minecraft)) {
+            this.activeButton = -1;
+            callback.cancel();
+            return;
+        }
         if (minecraft.screen == null && minecraft.getOverlay() == null) {
             KeyMapping.set(InputConstants.Type.MOUSE.getOrCreate(button), action != GLFW.GLFW_RELEASE);
         }
         this.activeButton = -1;
         callback.cancel();
+    }
+
+    private static boolean tryLookupModeHudClick(Minecraft minecraft) {
+        if (minecraft.getWindow().getScreenWidth() <= 0 || minecraft.getWindow().getScreenHeight() <= 0) {
+            return false;
+        }
+        int screenWidth = minecraft.getWindow().getGuiScaledWidth();
+        int screenHeight = minecraft.getWindow().getGuiScaledHeight();
+        int mouseX = (int) (minecraft.mouseHandler.xpos() * screenWidth / (double) minecraft.getWindow().getScreenWidth());
+        int mouseY = (int) (minecraft.mouseHandler.ypos() * screenHeight / (double) minecraft.getWindow().getScreenHeight());
+        return LookupModeHud.click(mouseX, mouseY);
     }
 
     @Inject(method = "onScroll(JDD)V", at = @At("HEAD"), cancellable = true)

@@ -121,7 +121,8 @@ public final class OllamaClient {
         int timeout = Math.max(1000, timeoutMs.getAsInt());
         String model = kind == Kind.WORD ? WORD_MODEL : SENTENCE_MODEL;
         String prompt = kind == Kind.WORD
-                ? "Translate this English word to Simplified Chinese. Reply with only the translation, no quotes: "
+                ? "You are an English-Chinese learner dictionary. For the English word below, reply in Simplified Chinese only "
+                        + "(part of speech + short senses). Do not repeat the English word alone. Word: "
                         + source
                 : "Translate this English text to Simplified Chinese. Reply with only the translation: " + source;
         try {
@@ -181,7 +182,13 @@ public final class OllamaClient {
             cache.put(Job.failed(kind, source, "empty"));
             return;
         }
-        cache.put(Job.ok(kind, source, out.strip()));
+        String stripped = out.strip();
+        // Small word models often echo the English token; never treat that as a gloss.
+        if (kind == Kind.WORD && source != null && stripped.equalsIgnoreCase(source.strip())) {
+            cache.put(Job.failed(kind, source, "echo"));
+            return;
+        }
+        cache.put(Job.ok(kind, source, stripped));
     }
 
     private static String trimSlash(String url) {
