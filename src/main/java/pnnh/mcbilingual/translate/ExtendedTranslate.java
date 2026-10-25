@@ -25,7 +25,7 @@ public final class ExtendedTranslate {
                         MCBilingual.LOGGER.info("Loaded learner dictionary with {} entries", local.size());
                     } catch (Exception exception) {
                         MCBilingual.LOGGER.warn("Learner dictionary missing; word lookup will use Ollama only", exception);
-                        local = new LearnerDictionary(java.util.Map.of());
+                        local = LearnerDictionary.empty();
                     }
                     dictionary = local;
                 }

@@ -25,6 +25,10 @@ public final class LearnerDictionary {
         this.inflectionToHeadword = Map.copyOf(inflectionToHeadword);
     }
 
+    public static LearnerDictionary empty() {
+        return new LearnerDictionary(Map.of(), Map.of());
+    }
+
     public static LearnerDictionary loadClasspath(String resourcePath) throws IOException {
         InputStream stream = LearnerDictionary.class.getResourceAsStream(resourcePath);
         if (stream == null) {
