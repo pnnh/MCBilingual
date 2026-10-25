@@ -1,0 +1,77 @@
+.specify/feature.json
+  s_f7f00e0734edfb::t_ef4ea3c9dd0136 1
+.specify/memory/constitution.md
+  s_f7f00e0734edfb::t_f70b7488b03d5f 3-6,8,133-138,193
+build.gradle
+  s_f7f00e0734edfb::t_9a6801f0853c08 144-147
+docs/MCBilingual.md
+  s_f7f00e0734edfb::t_89a36411a339a6 91-93
+gradle.properties
+  s_f7f00e0734edfb::t_af8c96ee0c14fa 56-59
+specs/011-journeymap-waypoint-pinyin/checklists/requirements.md
+  s_f7f00e0734edfb::t_f47fa77538b701 1-22
+specs/011-journeymap-waypoint-pinyin/contracts/journeymap-waypoint-pinyin.md
+  s_f7f00e0734edfb::t_7e3abef327b8fb 1-34
+specs/011-journeymap-waypoint-pinyin/data-model.md
+  s_f7f00e0734edfb::t_3c962b36c25cfe 1-25
+specs/011-journeymap-waypoint-pinyin/plan.md
+  s_f7f00e0734edfb::t_32da81c08cc020 1-55
+specs/011-journeymap-waypoint-pinyin/quickstart.md
+  s_f7f00e0734edfb::t_5fc7b02270ee8e 1-22
+specs/011-journeymap-waypoint-pinyin/research.md
+  s_f7f00e0734edfb::t_704d4f32c1245b 1-32
+specs/011-journeymap-waypoint-pinyin/spec.md
+  s_f7f00e0734edfb::t_c096d8771de172 1-95
+specs/011-journeymap-waypoint-pinyin/tasks.md
+  s_f7f00e0734edfb::t_eea04d79a5df38 1-35
+src/main/java/pnnh/mcbilingual/freeze/ComponentSentences.java
+  s_f7f00e0734edfb::t_66b32f2e7b7054 9,33
+src/main/java/pnnh/mcbilingual/freeze/SentenceResolver.java
+  s_f7f00e0734edfb::t_1559e8318b5931 58-77
+src/main/java/pnnh/mcbilingual/integration/jade/JadeBlockNames.java
+  s_f7f00e0734edfb::t_18f8005d26ff36 4,6,9,11,14-15,32,52-56,63,69-97,99-100,103
+src/main/java/pnnh/mcbilingual/integration/jade/JadeEntityNames.java
+  s_f7f00e0734edfb::t_9c6b140f1a195a 5,45-46,49-50,53
+src/main/java/pnnh/mcbilingual/integration/jade/JadeSecondaryNames.java
+  s_f7f00e0734edfb::t_a47f8cec4fd987 20,30
+src/main/java/pnnh/mcbilingual/integration/journeymap/JourneyMapMixinPlugin.java
+  s_f7f00e0734edfb::t_73551b914abc74 1-53
+src/main/java/pnnh/mcbilingual/integration/journeymap/mixin/WaypointManagerQueryServiceMixin.java
+  s_f7f00e0734edfb::t_efa6730b12de66 1-73
+src/main/java/pnnh/mcbilingual/language/ComponentNodes.java
+  s_f7f00e0734edfb::t_5cd281c3118902 1-116
+src/main/java/pnnh/mcbilingual/language/LanguageTexts.java
+  s_f7f00e0734edfb::t_304589263edb64 18-19,134-176
+src/main/java/pnnh/mcbilingual/search/WaypointNameMatch.java
+  s_f7f00e0734edfb::t_7c2b88c5150a33 1-37
+src/main/java/pnnh/mcbilingual/tooltip/ItemTooltipNames.java
+  s_f7f00e0734edfb::t_936dcf68e98ff9 50,70-72
+src/main/java/pnnh/mcbilingual/tooltip/SecondaryNamePolicy.java
+  s_f7f00e0734edfb::t_17234148a76d0e 6,14-16,59-62
+src/main/resources/mcbilingual-journeymap.mixins.json
+  s_f7f00e0734edfb::t_086613f5d241c1 1-14
+src/main/templates/META-INF/neoforge.mods.toml
+  s_f7f00e0734edfb::t_0e6a4f59dcc2aa 18,36-42,63-65
+src/test/java/pnnh/mcbilingual/freeze/SentenceResolverFormatTest.java
+  s_f7f00e0734edfb::t_b686d447d36f13 1-28
+src/test/java/pnnh/mcbilingual/search/WaypointNameMatchTest.java
+  s_f7f00e0734edfb::t_2a8a4906f482ad 1-51
+src/test/java/pnnh/mcbilingual/tooltip/SecondaryNamePolicyTest.java
+  s_f7f00e0734edfb::t_b7a6cbbb003573 50-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d39baf5b827a4fbfe9b89dd6665cdacc4f68b94b",
+  "prompts": {},
+  "sessions": {
+    "s_f7f00e0734edfb": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dfa8e6ac-0d4b-4283-8acf-6a378914bf39",
+        "model": "unknown"
+      },
+      "human_author": "pnnh <linyangz@outlook.com>"
+    }
+  }
+}
