@@ -1,0 +1,49 @@
+.claude/skills/speckit-analyze/SKILL.md
+  s_f7f00e0734edfb::t_0dfc18abc4d30b 72
+.claude/skills/speckit-checklist/SKILL.md
+  s_f7f00e0734edfb::t_748358f3ba3446 81
+.claude/skills/speckit-clarify/SKILL.md
+  s_f7f00e0734edfb::t_bf1ca3e42c12dd 66
+.claude/skills/speckit-converge/SKILL.md
+  s_f7f00e0734edfb::t_f04856fea901be 99
+.claude/skills/speckit-implement/SKILL.md
+  s_f7f00e0734edfb::t_1b2fa21997e4b3 60
+.claude/skills/speckit-plan/SKILL.md
+  s_f7f00e0734edfb::t_5bdb45469c6868 60
+.claude/skills/speckit-tasks/SKILL.md
+  s_f7f00e0734edfb::t_e235fe0f606930 60
+.claude/skills/speckit-taskstoissues/SKILL.md
+  s_f7f00e0734edfb::t_fca0a4f695a2cc 60
+.specify/init-options.json
+  s_f7f00e0734edfb::t_065162bf6cae95 7
+.specify/scripts/README.md
+  s_f7f00e0734edfb::t_bc60b832d098cc 1-19
+.specify/scripts/python/check_prerequisites.py
+  s_f7f00e0734edfb::t_3a9a50dc888682 1-300
+.specify/scripts/python/common.py
+  s_f7f00e0734edfb::t_aecf253469d65c 1-721
+.specify/scripts/python/create_new_feature.py
+  s_f7f00e0734edfb::t_ded59f7c79fcbb 1-466
+.specify/scripts/python/resolve_template.py
+  s_f7f00e0734edfb::t_c5612afe1677df 1-64
+.specify/scripts/python/setup_plan.py
+  s_f7f00e0734edfb::t_2ad31d1b1e7838 1-117
+.specify/scripts/python/setup_tasks.py
+  s_f7f00e0734edfb::t_a7f3d914b6a647 1-176
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8e069bda5e677c18a836bafc2915feee3990a30e",
+  "prompts": {},
+  "sessions": {
+    "s_f7f00e0734edfb": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dfa8e6ac-0d4b-4283-8acf-6a378914bf39",
+        "model": "unknown"
+      },
+      "human_author": "pnnh <linyangz@outlook.com>"
+    }
+  }
+}

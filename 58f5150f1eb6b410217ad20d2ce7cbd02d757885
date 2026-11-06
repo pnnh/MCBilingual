@@ -1,0 +1,47 @@
+.gitignore
+  s_f7f00e0734edfb::t_7ad322b6a1d11c 41
+.specify/feature.json
+  s_f7f00e0734edfb::t_b95eca74669194 1
+docs/plan/Ollama集成.md
+  s_f7f00e0734edfb::t_7c58ec63b395b2 91-92
+specs/010-ecdict-freq-60k/checklists/requirements.md
+  s_f7f00e0734edfb::t_3841300800ff5d 1-21
+specs/010-ecdict-freq-60k/plan.md
+  s_f7f00e0734edfb::t_d5d35c9b460345 1-39
+specs/010-ecdict-freq-60k/quickstart.md
+  s_f7f00e0734edfb::t_91b8f9d1aaed80 1-6
+specs/010-ecdict-freq-60k/research.md
+  s_f7f00e0734edfb::t_38317811d7993d 1-18
+specs/010-ecdict-freq-60k/spec.md
+  s_f7f00e0734edfb::t_315512a4e24008 1-52
+specs/010-ecdict-freq-60k/tasks.md
+  s_f7f00e0734edfb::t_7f95eec1bdc823 1-12
+src/main/java/pnnh/mcbilingual/dictionary/LearnerDictionary.java
+  s_f7f00e0734edfb::t_9ab551facd941f 28-31
+src/main/java/pnnh/mcbilingual/translate/ExtendedTranslate.java
+  s_f7f00e0734edfb::t_f7dce7f225fa8a 28
+src/main/resources/data/mcbilingual/dictionary/entries.tsv
+  s_f7f00e0734edfb::t_4771dd6955ad14 1-56996
+src/test/java/pnnh/mcbilingual/dictionary/BundledLexiconScaleTest.java
+  s_f7f00e0734edfb::t_bf0e87900f29ad 1-19
+tools/dictionary/README.md
+  s_f7f00e0734edfb::t_aa0019e800d857 5,7,9-10,13,15-35,41,43
+tools/dictionary/build_ecdict_tsv.py
+  s_f7f00e0734edfb::t_5f8676a5f336ae 1-156
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "58f5150f1eb6b410217ad20d2ce7cbd02d757885",
+  "prompts": {},
+  "sessions": {
+    "s_f7f00e0734edfb": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dfa8e6ac-0d4b-4283-8acf-6a378914bf39",
+        "model": "unknown"
+      },
+      "human_author": "pnnh <linyangz@outlook.com>"
+    }
+  }
+}

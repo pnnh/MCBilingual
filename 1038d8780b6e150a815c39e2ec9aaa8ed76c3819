@@ -1,0 +1,19 @@
+.specify/.gitignore
+  s_f7f00e0734edfb::t_d540b29cab6103 1-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1038d8780b6e150a815c39e2ec9aaa8ed76c3819",
+  "prompts": {},
+  "sessions": {
+    "s_f7f00e0734edfb": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dfa8e6ac-0d4b-4283-8acf-6a378914bf39",
+        "model": "unknown"
+      },
+      "human_author": "pnnh <linyangz@outlook.com>"
+    }
+  }
+}
