@@ -1,26 +1,74 @@
 package pnnh.mcbilingual.integration.jei;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import net.neoforged.fml.loading.LoadingModList;
+import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 
 import pnnh.mcbilingual.compat.RivalMods;
+import pnnh.mcbilingual.diagnostics.LoadReport;
 
 /**
- * Skips JEI mixins when the mod is not installed, so the client still reaches a world.
+ * Applies one JEI search mixin for the installed version.
+ * Below 19.56.0 the three-argument constructor is used. From 19.56.0 the four-argument
+ * constructor is used. The other mixin stays unapplied, so its missing descriptor cannot crash startup.
  */
 public final class JeiMixinPlugin implements IMixinConfigPlugin {
-    private boolean jeiLoaded;
+    private static volatile boolean enabled;
+
+    private JeiVersions.Line line = JeiVersions.Line.UNKNOWN;
+
+    public static boolean enabled() {
+        return enabled;
+    }
 
     @Override
     public void onLoad(String mixinPackage) {
+        line = JeiVersions.Line.UNKNOWN;
+        enabled = false;
+        if (RivalMods.isBlocked()) {
+            return;
+        }
         LoadingModList mods = LoadingModList.get();
-        jeiLoaded = mods != null && mods.getModFileById("jei") != null && !RivalMods.isBlocked();
+        if (mods == null) {
+            LoadReport.jeiModListMissing();
+            return;
+        }
+        ModFileInfo jei = mods.getModFileById("jei");
+        if (jei == null) {
+            LoadReport.jeiAbsent();
+            return;
+        }
+        String version = versionOf(jei);
+        JeiVersions.Line parsed = JeiVersions.classify(version);
+        JeiLineChoice.Choice choice;
+        Throwable unread = null;
+        try {
+            choice = JeiLineChoice.choose(parsed, inspect(jei));
+        } catch (RuntimeException | IOException | LinkageError exception) {
+            choice = JeiLineChoice.choose(parsed, null);
+            unread = exception;
+        }
+        line = choice.line();
+        enabled = choice.applies();
+        LoadReport.jeiSearchSelected(
+                JeiLineChoice.message(version, choice),
+                choice.applies(),
+                choice.source() == JeiLineChoice.Source.VERSION,
+                unread);
     }
 
     @Override
@@ -30,7 +78,7 @@ public final class JeiMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        return jeiLoaded;
+        return JeiLineChoice.applies(line, mixinClassName);
     }
 
     @Override
@@ -48,5 +96,44 @@ public final class JeiMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+        LoadReport.jeiMixinApplied(targetClassName);
+    }
+
+    private static JeiListElementShape.Shape inspect(ModFileInfo jei) throws IOException {
+        Path classFile = jei.getFile().findResource("mezz", "jei", "gui", "ingredients", "ListElementInfo.class");
+        if (classFile == null || !Files.isRegularFile(classFile)) {
+            return null;
+        }
+        ClassNode node = new ClassNode();
+        try (InputStream input = Files.newInputStream(classFile)) {
+            new ClassReader(input).accept(
+                    node,
+                    ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+        }
+        List<JeiListElementShape.Member> fields = new ArrayList<>();
+        if (node.fields != null) {
+            for (FieldNode field : node.fields) {
+                fields.add(new JeiListElementShape.Member(field.name, field.desc));
+            }
+        }
+        List<JeiListElementShape.Member> methods = new ArrayList<>();
+        if (node.methods != null) {
+            for (MethodNode method : node.methods) {
+                methods.add(new JeiListElementShape.Member(method.name, method.desc));
+            }
+        }
+        return JeiListElementShape.scan(fields, methods);
+    }
+
+    private static String versionOf(ModFileInfo jei) {
+        try {
+            String version = jei.versionString();
+            if (version == null || version.isBlank()) {
+                return "unknown";
+            }
+            return version;
+        } catch (RuntimeException | LinkageError exception) {
+            return "unknown";
+        }
     }
 }

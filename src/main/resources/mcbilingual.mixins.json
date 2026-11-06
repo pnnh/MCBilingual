@@ -6,6 +6,7 @@
   "plugin": "pnnh.mcbilingual.integration.jei.JeiMixinPlugin",
   "mixins": [],
   "client": [
+    "JeiListElementInfoLegacyMixin",
     "JeiListElementInfoMixin"
   ],
   "injectors": {

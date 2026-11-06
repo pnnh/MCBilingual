@@ -6,6 +6,8 @@ import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
 
 import pnnh.mcbilingual.MCBilingual;
+import pnnh.mcbilingual.compat.RivalMods;
+import pnnh.mcbilingual.diagnostics.LoadReport;
 import pnnh.mcbilingual.search.ItemSearchIndex;
 
 /**
@@ -22,6 +24,13 @@ public class JeiSearchPlugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
+        if (RivalMods.isBlocked()) {
+            return;
+        }
+        if (!JeiMixinPlugin.enabled()) {
+            LoadReport.jeiRuntimeWithoutMixin();
+            return;
+        }
         MCBilingual.LOGGER.info("JEI search integration active, indexed items={}", ItemSearchIndex.size());
     }
 }
