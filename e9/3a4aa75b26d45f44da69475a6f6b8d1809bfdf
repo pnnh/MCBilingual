@@ -1,0 +1,35 @@
+.specify/feature.json
+  s_7ebd0b142b2199::t_16b36d2494254b 2
+specs/008-compat-mode-config/data-model.md
+  s_7ebd0b142b2199::t_0e9f51a1e0dae9 1-48
+specs/008-compat-mode-config/spec.md
+  s_7ebd0b142b2199::t_b0af4054fbc519 1-175
+specs/008-compat-mode-config/checklists/requirements.md
+  s_7ebd0b142b2199::t_9373e0b7a5c697 1-37
+specs/008-compat-mode-config/plan.md
+  s_7ebd0b142b2199::t_cedc8eda26ad55 1-103
+specs/008-compat-mode-config/quickstart.md
+  s_7ebd0b142b2199::t_c2090130eaf66a 1-45
+specs/008-compat-mode-config/contracts/compat-gates.md
+  s_7ebd0b142b2199::t_f10965d4bb3b2b 1-16
+specs/008-compat-mode-config/contracts/compat-config.md
+  s_7ebd0b142b2199::t_a2a09196720517 1-14
+specs/008-compat-mode-config/research.md
+  s_7ebd0b142b2199::t_f51682ef33ad8d 1-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e93a4aa75b26d45f44da69475a6f6b8d1809bfdf",
+  "prompts": {},
+  "sessions": {
+    "s_7ebd0b142b2199": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1aff2-dbee-77c3-9d0c-123cc86d7db6",
+        "model": "unknown"
+      },
+      "human_author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
