@@ -6,6 +6,8 @@ import mezz.jei.api.ingredients.ITypedIngredient;
 import mezz.jei.gui.ingredients.IListElement;
 import net.minecraft.world.item.ItemStack;
 
+import pnnh.mcbilingual.compat.CompatGate;
+import pnnh.mcbilingual.compat.IntegrationGuard;
 import pnnh.mcbilingual.diagnostics.LoadReport;
 import pnnh.mcbilingual.search.ItemSearchIndex;
 
@@ -18,6 +20,9 @@ public final class JeiSearchAppender {
     }
 
     public static List<String> append(IListElement<?> element, List<String> names) {
+        if (!CompatGate.dedicatedEnabled("jei")) {
+            return names;
+        }
         try {
             LoadReport.jeiHookRan(ItemSearchIndex.size());
             if (element == null) {
@@ -29,7 +34,7 @@ public final class JeiSearchAppender {
             }
             return JeiSearchTerms.merge(names, ItemSearchIndex.terms(stack.getItem().getDescriptionId()));
         } catch (Exception | LinkageError exception) {
-            LoadReport.jeiSearchFailed(exception);
+            IntegrationGuard.fail("jei", exception);
             return names;
         }
     }

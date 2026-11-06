@@ -3,5 +3,6 @@
   "config.jade.plugin_mcbilingual.jade_entity_name": "实体第二语言名称",
   "key.categories.mcbilingual": "MCBilingual",
   "key.mcbilingual.switch_language": "切换中文 / 英文",
-  "key.mcbilingual.freeze_ui": "定格界面并查看另一种语言"
+  "key.mcbilingual.freeze_ui": "定格界面并查看另一种语言",
+  "config.mcbilingual.compat_modes": "兼容模式列表，默认为空。空列表表示每个模组都是 Full。一行写成 modid=Full、modid=Generic 或 modid=Off。Full：运行专为该模组写的兼容。Generic：不运行这些专用兼容，接近原版的文本仍可能显示双语。Off：不在该模组自己的界面和覆盖层上使用本模组的功能，同一画面里的原版内容不受影响。"
 }

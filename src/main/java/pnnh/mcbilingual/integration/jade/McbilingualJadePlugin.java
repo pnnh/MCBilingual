@@ -6,6 +6,7 @@ import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 
+import pnnh.mcbilingual.compat.IntegrationGuard;
 import pnnh.mcbilingual.compat.RivalMods;
 
 /**
@@ -18,7 +19,11 @@ public class McbilingualJadePlugin implements IWailaPlugin {
         if (RivalMods.isBlocked()) {
             return;
         }
-        registration.registerBlockComponent(JadeBlockNames.INSTANCE, Block.class);
-        registration.registerEntityComponent(JadeEntityNames.INSTANCE, Entity.class);
+        try {
+            registration.registerBlockComponent(JadeBlockNames.INSTANCE, Block.class);
+            registration.registerEntityComponent(JadeEntityNames.INSTANCE, Entity.class);
+        } catch (Exception | LinkageError exception) {
+            IntegrationGuard.fail("jade", exception);
+        }
     }
 }

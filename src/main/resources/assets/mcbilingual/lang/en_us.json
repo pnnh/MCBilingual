@@ -3,5 +3,6 @@
   "config.jade.plugin_mcbilingual.jade_entity_name": "Entity secondary name",
   "key.categories.mcbilingual": "MCBilingual",
   "key.mcbilingual.switch_language": "Switch Chinese / English",
-  "key.mcbilingual.freeze_ui": "Freeze interface and look up the other language"
+  "key.mcbilingual.freeze_ui": "Freeze interface and look up the other language",
+  "config.mcbilingual.compat_modes": "Compatibility modes. Empty means every mod is Full. One line is modid=Full, modid=Generic, or modid=Off. Full runs the dedicated compatibility. Generic skips that dedicated code; text that behaves like vanilla may still be bilingual. Off disables this mod on that mod's own screens and overlays. Vanilla content on the same screen stays available."
 }

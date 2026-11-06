@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 
+import pnnh.mcbilingual.compat.IntegrationGuard;
 import pnnh.mcbilingual.compat.RivalMods;
 import pnnh.mcbilingual.diagnostics.LoadReport;
 
@@ -30,6 +31,7 @@ public final class JeiMixinPlugin implements IMixinConfigPlugin {
     private static volatile boolean enabled;
 
     private JeiVersions.Line line = JeiVersions.Line.UNKNOWN;
+    private boolean overlay;
 
     public static boolean enabled() {
         return enabled;
@@ -39,6 +41,18 @@ public final class JeiMixinPlugin implements IMixinConfigPlugin {
     public void onLoad(String mixinPackage) {
         line = JeiVersions.Line.UNKNOWN;
         enabled = false;
+        overlay = false;
+        try {
+            loadJei();
+        } catch (Exception | LinkageError exception) {
+            line = JeiVersions.Line.UNKNOWN;
+            enabled = false;
+            overlay = false;
+            IntegrationGuard.fail("jei", exception);
+        }
+    }
+
+    private void loadJei() {
         if (RivalMods.isBlocked()) {
             return;
         }
@@ -52,6 +66,7 @@ public final class JeiMixinPlugin implements IMixinConfigPlugin {
             LoadReport.jeiAbsent();
             return;
         }
+        overlay = true;
         String version = versionOf(jei);
         JeiVersions.Line parsed = JeiVersions.classify(version);
         JeiLineChoice.Choice choice;
@@ -78,7 +93,20 @@ public final class JeiMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (isOverlayMixin(mixinClassName)) {
+            return overlay;
+        }
         return JeiLineChoice.applies(line, mixinClassName);
+    }
+
+    private static boolean isOverlayMixin(String mixinClassName) {
+        if (mixinClassName == null || mixinClassName.isEmpty()) {
+            return false;
+        }
+        String name = mixinClassName.replace('/', '.');
+        int dot = name.lastIndexOf('.');
+        String simple = dot < 0 ? name : name.substring(dot + 1);
+        return "JeiOverlayOwnerMixin".equals(simple);
     }
 
     @Override

@@ -12,6 +12,8 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.cyclops.integratedterminals.capability.ingredient.IngredientComponentTerminalStorageHandlerFluidStack;
 import org.cyclops.integratedterminals.core.terminalstorage.query.SearchMode;
 
+import pnnh.mcbilingual.compat.CompatGate;
+import pnnh.mcbilingual.compat.IntegrationGuard;
 import pnnh.mcbilingual.search.FluidSearchIndex;
 
 /**
@@ -29,18 +31,34 @@ public class TerminalFluidFilterMixin {
             SearchMode searchMode,
             String query,
             CallbackInfoReturnable<Predicate<FluidStack>> callback) {
-        if (searchMode != SearchMode.DEFAULT) {
+        if (!CompatGate.dedicatedEnabled("integratedterminals")) {
             return;
         }
-        Predicate<FluidStack> original = callback.getReturnValue();
-        if (original == null) {
-            return;
+        try {
+            if (searchMode != SearchMode.DEFAULT) {
+                return;
+            }
+            Predicate<FluidStack> original = callback.getReturnValue();
+            if (original == null) {
+                return;
+            }
+            Predicate<FluidStack> widened = stack -> {
+                if (!CompatGate.dedicatedEnabled("integratedterminals")) {
+                    return original.test(stack);
+                }
+                try {
+                    return original.test(stack)
+                            || (stack != null
+                                    && !stack.isEmpty()
+                                    && FluidSearchIndex.matches(stack.getDescriptionId(), query));
+                } catch (Exception | LinkageError exception) {
+                    IntegrationGuard.fail("integratedterminals", exception);
+                    return original.test(stack);
+                }
+            };
+            callback.setReturnValue(widened);
+        } catch (Exception | LinkageError exception) {
+            IntegrationGuard.fail("integratedterminals", exception);
         }
-        Predicate<FluidStack> widened = stack ->
-                original.test(stack)
-                        || (stack != null
-                                && !stack.isEmpty()
-                                && FluidSearchIndex.matches(stack.getDescriptionId(), query));
-        callback.setReturnValue(widened);
     }
 }

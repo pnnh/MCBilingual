@@ -6,8 +6,10 @@ import com.mojang.logging.LogUtils;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 
+import pnnh.mcbilingual.compat.CompatConfig;
 import pnnh.mcbilingual.compat.RivalMods;
 import pnnh.mcbilingual.diagnostics.LoadReport;
 import pnnh.mcbilingual.freeze.FreezeKeyHandler;
@@ -22,8 +24,11 @@ public class MCBilingual {
     public static final String MOD_ID = "mcbilingual";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public MCBilingual(IEventBus modEventBus) {
+    public MCBilingual(IEventBus modEventBus, ModContainer container) {
         try {
+            CompatConfig.register(container);
+            modEventBus.addListener(CompatConfig::onLoading);
+            modEventBus.addListener(CompatConfig::onReloading);
             if (RivalMods.isBlocked()) {
                 LOGGER.warn(RivalMods.message());
                 return;

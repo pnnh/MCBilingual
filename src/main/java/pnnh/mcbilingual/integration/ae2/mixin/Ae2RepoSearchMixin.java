@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import appeng.menu.me.common.GridInventoryEntry;
 
+import pnnh.mcbilingual.compat.CompatGate;
+import pnnh.mcbilingual.compat.IntegrationGuard;
 import pnnh.mcbilingual.integration.ae2.Ae2ItemQuery;
 
 /**
@@ -23,13 +25,30 @@ public class Ae2RepoSearchMixin {
             remap = false)
     @SuppressWarnings("unchecked")
     private boolean mcbilingual$wrapNameSearch(ArrayList<Object> list, Object predicate) {
-        if (predicate instanceof Ae2NameSearchAccessor named) {
-            String term = named.mcbilingual$term();
-            Predicate<GridInventoryEntry> original = (Predicate<GridInventoryEntry>) predicate;
-            Predicate<GridInventoryEntry> wrapped = entry ->
-                    original.test(entry) || Ae2ItemQuery.matches(entry, term);
-            return list.add(wrapped);
+        if (!CompatGate.dedicatedEnabled("ae2")) {
+            return list.add(predicate);
         }
-        return list.add(predicate);
+        try {
+            if (predicate instanceof Ae2NameSearchAccessor named) {
+                String term = named.mcbilingual$term();
+                Predicate<GridInventoryEntry> original = (Predicate<GridInventoryEntry>) predicate;
+                Predicate<GridInventoryEntry> wrapped = entry -> {
+                    if (!CompatGate.dedicatedEnabled("ae2")) {
+                        return original.test(entry);
+                    }
+                    try {
+                        return original.test(entry) || Ae2ItemQuery.matches(entry, term);
+                    } catch (Exception | LinkageError exception) {
+                        IntegrationGuard.fail("ae2", exception);
+                        return original.test(entry);
+                    }
+                };
+                return list.add(wrapped);
+            }
+            return list.add(predicate);
+        } catch (Exception | LinkageError exception) {
+            IntegrationGuard.fail("ae2", exception);
+            return list.add(predicate);
+        }
     }
 }

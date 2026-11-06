@@ -1,17 +1,17 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 → 2.0.0
+- Version change: 2.0.0 → 2.1.0
 - Modified principles:
-  - I. Client Only → I. Client Only (rationale: bilingual learning aid)
-  - II. Translations Stay Outside → II. Game Language Packs Outside; Learner Aids May Ship
-  - III. Own the Behavior → unchanged in substance
-  - IV. Two Languages Until Expanded → IV. Two Languages Until Expanded
-    (explicitly allows freeze extended lookup/MT within zh_cn/en_us)
-  - V. Verify in a Client Session → unchanged in substance
-- Added sections: Purpose
+  - I–V unchanged in substance
+  - Additional Constraints: required dependencies narrowed to Minecraft and NeoForge;
+    third-party init failure must skip that integration and log
+- Added sections:
+  - VI. Vanilla First, Third-Party Optional
 - Removed sections: none
 - Follow-up TODOs:
-  - Feature spec 007 for freeze word/sentence + Ollama (not written in this amendment)
+  - Per-mod client config (Full / Generic / Off) is specified in
+    specs/008-compat-mode-config, not in this amendment.
+  - Feature spec 007 for freeze word/sentence + Ollama (not written in the 2.0.0 amendment)
   - Align specs/006 FR-007/FR-008 with principle II when 007 is specified
 -->
 
@@ -118,12 +118,47 @@ have an automated test that does not start the game. Player-visible claims
 MUST NOT be marked done from a compile alone. Optional Ollama paths MUST be
 checked at least once with the service present and once with it absent.
 
+### VI. Vanilla First, Third-Party Optional
+
+The published mod MUST have only two required dependencies:
+
+- Minecraft Java Edition 1.21.1.
+- NeoForge 21.1.251, or a newer NeoForge build on that same API line. The
+  published range MAY stay open upward while the 21.1 API remains compatible,
+  as in `[21.1.251,)`.
+
+No other mod is a requirement to load, to reach a world, or to provide
+bilingual behavior for vanilla items, tooltips, and screens. Jade, JEI, AE2,
+Integrated Terminals, language packs, and later integrations are optional.
+Their jars MAY be on the development classpath so compatibility can be tested.
+They MUST NOT be packed into the published jar, and they MUST NOT be declared
+so that a missing mod or a version outside a range prevents startup.
+
+Vanilla content is the first-priority surface. Compatibility code written for
+one third-party mod MUST be isolated from the rest of the mod. If that code
+fails to initialize because of a version mismatch or any other compatibility
+error, the mod MUST skip that integration, write a client log that names the
+mod and the failure, and continue. The failure MUST NOT stop vanilla behavior
+or any other integration.
+
+Standing down because Polyglot Tooltip or Language Reload is installed remains
+principle III. That is a deliberate whole-mod disable, not an integration
+init failure.
+
+Rationale: players must be able to use the mod on a vanilla client. A broken
+optional mod must not take down tooltips, search, or language switching for
+everything else. Third-party jars exist so development can test compatibility,
+not so the mod needs them to run.
+
 ## Additional Constraints
 
-- Minecraft 1.21.1, NeoForge 21.1.251, Java 21.
+- Minecraft 1.21.1, NeoForge `[21.1.251,)` on the 21.1 API line, Java 21.
+  These are the only required dependencies.
 - Mod id `mcbilingual`, package `pnnh.mcbilingual`, client dist only.
-- Optional integrations (JEI, Jade) MUST load as optional. The mod MUST still
-  reach a world when they are absent.
+- Third-party integrations MUST load only when that mod is present. The mod
+  MUST still reach a world when they are absent. An integration that fails
+  during its own initialization MUST be skipped and logged, and MUST NOT fail
+  mod construction.
 - Pinyin is search text only. It MUST NOT appear in tooltips or Jade.
 - Switching the displayed primary language MUST NOT run a full resource-pack
   reload.
@@ -174,4 +209,4 @@ The ratification date stays 2026-10-22. The amended date changes on every
 edit. Specs and plans are reviewed against the current version before
 implementation starts.
 
-**Version**: 2.0.0 | **Ratified**: 2026-10-22 | **Last Amended**: 2026-10-24
+**Version**: 2.1.0 | **Ratified**: 2026-10-22 | **Last Amended**: 2026-11-06

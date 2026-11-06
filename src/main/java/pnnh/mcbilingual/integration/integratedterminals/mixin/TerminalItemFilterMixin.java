@@ -12,6 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import org.cyclops.integratedterminals.capability.ingredient.IngredientComponentTerminalStorageHandlerItemStack;
 import org.cyclops.integratedterminals.core.terminalstorage.query.SearchMode;
 
+import pnnh.mcbilingual.compat.CompatGate;
+import pnnh.mcbilingual.compat.IntegrationGuard;
 import pnnh.mcbilingual.search.ItemSearchIndex;
 
 /**
@@ -29,16 +31,32 @@ public class TerminalItemFilterMixin {
             SearchMode searchMode,
             String query,
             CallbackInfoReturnable<Predicate<ItemStack>> callback) {
-        if (searchMode != SearchMode.DEFAULT) {
+        if (!CompatGate.dedicatedEnabled("integratedterminals")) {
             return;
         }
-        Predicate<ItemStack> original = callback.getReturnValue();
-        if (original == null) {
-            return;
+        try {
+            if (searchMode != SearchMode.DEFAULT) {
+                return;
+            }
+            Predicate<ItemStack> original = callback.getReturnValue();
+            if (original == null) {
+                return;
+            }
+            Predicate<ItemStack> widened = stack -> {
+                if (!CompatGate.dedicatedEnabled("integratedterminals")) {
+                    return original.test(stack);
+                }
+                try {
+                    return original.test(stack)
+                            || ItemSearchIndex.matches(stack.getItem().getDescriptionId(), query);
+                } catch (Exception | LinkageError exception) {
+                    IntegrationGuard.fail("integratedterminals", exception);
+                    return original.test(stack);
+                }
+            };
+            callback.setReturnValue(widened);
+        } catch (Exception | LinkageError exception) {
+            IntegrationGuard.fail("integratedterminals", exception);
         }
-        Predicate<ItemStack> widened = stack ->
-                original.test(stack)
-                        || ItemSearchIndex.matches(stack.getItem().getDescriptionId(), query);
-        callback.setReturnValue(widened);
     }
 }

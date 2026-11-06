@@ -1,7 +1,6 @@
 package pnnh.mcbilingual.diagnostics;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 public final class LoadReport {
     private static final Logger LOGGER = LoggerFactory.getLogger("pnnh.mcbilingual.MCBilingual");
     private static final AtomicBoolean jeiHookLogged = new AtomicBoolean();
-    private static final AtomicInteger jeiSearchFailures = new AtomicInteger();
 
     private LoadReport() {
     }
@@ -23,10 +21,62 @@ public final class LoadReport {
     }
 
     public static void modInitFailed(Throwable error) {
-        LOGGER.error(
-                "MCBilingual 初始化失败，提示、搜索和语言切换不会生效。请把这条日志发给作者排查。"
-                        + " MCBilingual failed to initialize. Tooltips, search, and language switching will not work."
-                        + " Send this log when asking for help.",
+        String message = "MCBilingual 初始化失败，提示、搜索和语言切换不会生效。请把这条日志发给作者排查。"
+                + " MCBilingual failed to initialize. Tooltips, search, and language switching will not work."
+                + " Send this log when asking for help.";
+        logAtError(message, error);
+    }
+
+    public static void integrationFailed(String modId, Throwable error) {
+        String reason = error == null || error.getMessage() == null || error.getMessage().isBlank()
+                ? "unknown"
+                : error.getMessage();
+        integrationFailed(modId, reason, error);
+    }
+
+    public static void integrationFailed(String modId, String reason) {
+        integrationFailed(modId, reason, null);
+    }
+
+    private static void integrationFailed(String modId, String reason, Throwable error) {
+        String why = reason == null || reason.isBlank() ? "unknown" : reason;
+        String id = modId == null || modId.isBlank() ? "unknown" : modId;
+        logAtError(
+                "MCBilingual 跳过 " + id + " 的专用兼容：" + why
+                        + "。原版功能和其它模组继续可用。"
+                        + " MCBilingual skipped dedicated compatibility for " + id + ": " + why
+                        + ". Vanilla features and other mods keep working.",
+                error);
+    }
+
+    public static void compatInvalid(String modId, String raw) {
+        String id = modId == null || modId.isBlank() ? "unknown" : modId;
+        String shown = raw == null ? "" : raw;
+        LOGGER.warn(
+                "MCBilingual 忽略无效的兼容模式，{} 按 Full 运行。原文：{}。"
+                        + " MCBilingual ignored an invalid compatibility mode. {} stays Full. Raw entry: {}.",
+                id,
+                shown,
+                id,
+                shown);
+    }
+
+    public static void compatDuplicate(String modId, String raw) {
+        String id = modId == null || modId.isBlank() ? "unknown" : modId;
+        String shown = raw == null ? "" : raw;
+        LOGGER.warn(
+                "MCBilingual 兼容列表里 {} 出现多次，采用后写的一项。原文：{}。"
+                        + " MCBilingual saw {} more than once and kept the later entry. Raw entry: {}.",
+                id,
+                shown,
+                id,
+                shown);
+    }
+
+    public static void compatReloadFailed(Throwable error) {
+        logAtError(
+                "MCBilingual 没能重新读取兼容列表，仍使用上一份。"
+                        + " MCBilingual could not reload the compatibility list and kept the previous one.",
                 error);
     }
 
@@ -78,21 +128,6 @@ public final class LoadReport {
     public static void jeiHookRan(int indexedItems) {
         if (jeiHookLogged.compareAndSet(false, true)) {
             LOGGER.info("MCBilingual JEI search hook ran. Indexed items={}", indexedItems);
-        }
-    }
-
-    public static void jeiSearchFailed(Throwable error) {
-        int count = jeiSearchFailures.incrementAndGet();
-        if (count == 1) {
-            LOGGER.error(
-                    "MCBilingual 给 JEI 物品追加搜索词失败，游戏会继续运行，该物品可能无法用另一种语言或拼音搜到。"
-                            + " MCBilingual failed to add JEI search terms. The game will continue."
-                            + " That ingredient may not match the other language or pinyin.",
-                    error);
-            return;
-        }
-        if (count == 20 || count % 500 == 0) {
-            LOGGER.error("MCBilingual JEI search term failures so far: {}", count);
         }
     }
 

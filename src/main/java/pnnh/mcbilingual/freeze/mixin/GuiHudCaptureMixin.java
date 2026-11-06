@@ -9,12 +9,14 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 
+import pnnh.mcbilingual.compat.UiOwner;
 import pnnh.mcbilingual.freeze.FreezeCapture;
 
 @Mixin(Gui.class)
 public class GuiHudCaptureMixin {
     @Inject(method = "render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V", at = @At("HEAD"))
     private void mcbilingual$beginHud(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo callback) {
+        UiOwner.beginFrame();
         FreezeCapture.beginDraw();
     }
 

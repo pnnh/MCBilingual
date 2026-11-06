@@ -14,6 +14,9 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
+import pnnh.mcbilingual.compat.CompatGate;
+import pnnh.mcbilingual.compat.UiOwner;
+
 /**
  * Draft rectangles for one unfrozen frame. Chat sequences outlive the frame
  * because a line is wrapped once and drawn again later. Tooltip sequences
@@ -38,6 +41,9 @@ public final class FreezeCapture {
     }
 
     public static void beginDraw() {
+        if (depth == 0) {
+            UiOwner.beginFrame();
+        }
         depth++;
         captured = true;
     }
@@ -100,6 +106,9 @@ public final class FreezeCapture {
      * Chat keeps the wrapped sequence and draws it on later frames.
      */
     public static void remember(FormattedCharSequence sequence, Component component) {
+        if (CompatGate.sharedBlocked()) {
+            return;
+        }
         if (sequence == null || component == null || sequences.containsKey(sequence)) {
             return;
         }
@@ -114,6 +123,9 @@ public final class FreezeCapture {
      * Tooltip lines are created and drawn in the same frame.
      */
     public static void rememberFrame(FormattedCharSequence sequence, Component component) {
+        if (CompatGate.sharedBlocked()) {
+            return;
+        }
         if (sequence == null || component == null) {
             return;
         }
@@ -121,6 +133,9 @@ public final class FreezeCapture {
     }
 
     public static void glyph(Font font, FormattedCharSequence text, float x, float y, Matrix4f matrix) {
+        if (CompatGate.sharedBlocked()) {
+            return;
+        }
         if (!recording() || font == null || text == null || matrix == null) {
             return;
         }

@@ -20,6 +20,7 @@ import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 import pnnh.mcbilingual.MCBilingual;
+import pnnh.mcbilingual.compat.CompatGate;
 import pnnh.mcbilingual.compat.RivalMods;
 import pnnh.mcbilingual.language.LanguageTexts;
 
@@ -35,7 +36,7 @@ public final class ItemTooltipNames {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onItemTooltip(ItemTooltipEvent event) {
-        if (RivalMods.isBlocked()) {
+        if (RivalMods.isBlocked() || CompatGate.sharedBlocked()) {
             return;
         }
         ItemStack stack = event.getItemStack();
@@ -53,7 +54,7 @@ public final class ItemTooltipNames {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGatherComponents(RenderTooltipEvent.GatherComponents event) {
-        if (RivalMods.isBlocked()) {
+        if (RivalMods.isBlocked() || CompatGate.sharedBlocked()) {
             return;
         }
         ItemStack stack = event.getItemStack();
