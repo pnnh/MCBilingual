@@ -1,0 +1,50 @@
+src/test/java/pnnh/mcbilingual/integration/jei/JeiVersionsTest.java
+  s_7ebd0b142b2199::t_c4abb37de32060 1-40
+src/main/java/pnnh/mcbilingual/integration/jei/mixin/JeiListElementInfoLegacyMixin.java
+  s_7ebd0b142b2199::t_304a7fe2e16a51 1-39
+src/main/java/pnnh/mcbilingual/diagnostics/LoadReport.java
+  s_7ebd0b142b2199::t_e82e50dd1e02f9 1-93
+  s_7ebd0b142b2199::t_f2f82a91a53f3e 94-96
+src/main/java/pnnh/mcbilingual/integration/jei/JeiSearchTerms.java
+  s_7ebd0b142b2199::t_2982486bf22ba5 1-37
+src/main/java/pnnh/mcbilingual/integration/jei/JeiLineChoice.java
+  s_7ebd0b142b2199::t_8c1a0cacf11b2a 1-126
+src/test/java/pnnh/mcbilingual/integration/jei/JeiLineChoiceTest.java
+  s_7ebd0b142b2199::t_dc228e27b264ed 1-132
+src/main/java/pnnh/mcbilingual/integration/jei/mixin/JeiListElementInfoMixin.java
+  s_7ebd0b142b2199::t_0fdef7630fd410 16-17,20-22,30,35,37
+  s_7ebd0b142b2199::t_da39d4f2c825e9 13,28-29,31,36
+src/test/java/pnnh/mcbilingual/integration/jei/JeiSearchTermsTest.java
+  s_7ebd0b142b2199::t_fd6346f63222c6 1-32
+src/main/java/pnnh/mcbilingual/integration/jei/JeiVersions.java
+  s_7ebd0b142b2199::t_2bdee7a2e44e48 1-90
+src/test/java/pnnh/mcbilingual/integration/jei/JeiListElementShapeTest.java
+  s_7ebd0b142b2199::t_0761c3a12524c1 14-16,19-23,27-28,30-34,38-39,41,43-44,48-49,53-55
+  s_7ebd0b142b2199::t_c0dc0f6b5ba1e4 1-13,17-18,24-26,29,35-37,40,42,45-47,50-52,56-64
+src/main/java/pnnh/mcbilingual/integration/jei/JeiListElementShape.java
+  s_7ebd0b142b2199::t_b72bdbf1ef0a22 1-6,10-22,29-30,32-35,38-39,49-52,55,57-67
+  s_7ebd0b142b2199::t_cc9a0c48378ce2 7-9,23-28,31,36-37,40-48,53-54,56
+src/main/java/pnnh/mcbilingual/integration/jei/JeiMixinPlugin.java
+  s_7ebd0b142b2199::t_08960ce405ec89 25-27,32,40,56-58,60,62-63,65-71,81,102,105,114-117,120-123,125
+  s_7ebd0b142b2199::t_afe2cdf43b770f 3-7,11,13-14,19,22,30,33-36,41-44,46,48-55,59,61,64,99-101,103-104,106-113,118-119,124,126-137
+  s_7ebd0b142b2199::t_13346ebe1af831 31
+  s_7ebd0b142b2199::t_bd427e15cd58ea 47
+src/main/java/pnnh/mcbilingual/integration/jei/JeiSearchAppender.java
+  s_7ebd0b142b2199::t_1670ca3140f997 1-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "960d006d803c8fe894374a82f4dfcfd599e1490a",
+  "prompts": {},
+  "sessions": {
+    "s_7ebd0b142b2199": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1aff2-dbee-77c3-9d0c-123cc86d7db6",
+        "model": "unknown"
+      },
+      "human_author": "larry <xspanni@gmail.com>"
+    }
+  }
+}
